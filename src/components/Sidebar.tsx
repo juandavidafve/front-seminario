@@ -103,7 +103,7 @@ export default function Sidebar() {
                     className={cn(
                       "w-full justify-start has-[>svg]:p-0",
                       currentNavItem === item &&
-                        "bg-neutral-100 text-neutral-900",
+                        "bg-sidebar-accent text-sidebar-accent-foreground",
                       collapsed && "w-9",
                     )}
                     onClick={() => {
