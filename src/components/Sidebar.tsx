@@ -9,6 +9,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { auth } from "@/lib/firebase";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -43,7 +44,7 @@ export default function Sidebar() {
   const [collapsed, setCollapsed] = useState(true);
 
   async function handleLogout() {
-    //await auth.signOut();
+    await auth.signOut();
   }
 
   return (
