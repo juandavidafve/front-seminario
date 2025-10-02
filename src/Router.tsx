@@ -2,10 +2,11 @@ import { HashRouter, Routes, Route, Navigate } from "react-router";
 
 import { useAppSelector } from "@/hooks/redux";
 import Login from "@/pages/auth/Login";
+import DatosPersonales from "@/pages/datos-personales";
+import Usuarios from "@/pages/usuarios";
 
 import Layout from "./Layout";
 import "./index.css";
-import DatosPersonales from "./pages/datos-personales";
 
 export default function Router() {
   const user = useAppSelector((state) => state.auth.user);
@@ -20,6 +21,7 @@ export default function Router() {
         >
           <Route index />
           <Route path="datos-personales" element={<DatosPersonales />} />
+          <Route path="usuarios" element={<Usuarios />} />
         </Route>
 
         <Route
