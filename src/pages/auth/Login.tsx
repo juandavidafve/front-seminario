@@ -13,8 +13,6 @@ export default function Login() {
 
     try {
       await signInWithPopup(auth, provider);
-
-      //handleRedirect();
     } catch (error) {
       //if (error instanceof FirebaseError) {
       //  handleFirebaseError(toast.error, error, [
