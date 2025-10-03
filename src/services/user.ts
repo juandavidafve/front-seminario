@@ -14,3 +14,15 @@ export async function setAccountInfo(data: UserForm) {
 
   return UserSchema.parse(req.data);
 }
+
+export async function getUsers() {
+  const req = await api.get(base + "/all");
+
+  return UserSchema.array().parse(req.data);
+}
+
+export async function toggleAdmin(uid: string) {
+  const req = await api.put(base + "/toggle/" + uid);
+
+  return UserSchema.parse(req.data);
+}

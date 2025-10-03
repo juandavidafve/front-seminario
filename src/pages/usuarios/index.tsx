@@ -1,5 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Icon } from "@iconify/react";
+import { useEffect, useState } from "react";
+import { useAsync } from "react-async-hook";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
@@ -8,8 +10,20 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import FormInput from "@/components/ui/form-input";
 import { Switch } from "@/components/ui/switch";
+import type { User } from "@/schemas/User";
+import { getUsers, toggleAdmin } from "@/services/user";
 
 export default function Usuarios() {
+  const [users, setUsers] = useState<User[]>([]);
+  const usersReq = useAsync(getUsers, []);
+  const [filterQuery, setFilterQuery] = useState("");
+
+  useEffect(() => {
+    if (usersReq.result !== undefined) {
+      setUsers(usersReq.result);
+    }
+  }, [usersReq.result]);
+
   const formSchema = z.object({
     query: z.string(),
   });
@@ -22,21 +36,19 @@ export default function Usuarios() {
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    setFilterQuery(values.query);
   }
 
-  const users = [
-    {
-      name: "Juan David Afanador",
-      email: "juanafanador07@gmail.com",
-      admin: true,
-    },
-    {
-      name: "Kevin",
-      email: "gatitagolosa69@gmail.com",
-      admin: false,
-    },
-  ];
+  async function handleToggleAdmin(user: User) {
+    await toggleAdmin(user.uid);
+    usersReq.execute();
+  }
+
+  const filteredUsers = users?.filter((user) => {
+    if (filterQuery.length === 0) return true;
+
+    return user.email.includes(filterQuery) || user.name.includes(filterQuery);
+  });
 
   return (
     <>
@@ -59,9 +71,12 @@ export default function Usuarios() {
       </Form>
 
       <div className="my-6 space-y-4">
-        {users.map((user) => {
+        {filteredUsers.length === 0 && (
+          <p className="text-center font-bold">Sin resultados</p>
+        )}
+        {filteredUsers.map((user) => {
           return (
-            <Card>
+            <Card key={user.uid}>
               <CardContent className="grid grid-cols-[auto_1fr_auto] gap-4">
                 <Icon
                   icon="material-symbols:person-outline-rounded"
@@ -73,7 +88,10 @@ export default function Usuarios() {
                 </div>
                 <div className="flex items-center gap-2">
                   Admin
-                  <Switch checked={user.admin} />
+                  <Switch
+                    checked={user.roles.includes("ROLE_ADMIN")}
+                    onCheckedChange={() => handleToggleAdmin(user)}
+                  />
                 </div>
               </CardContent>
             </Card>
