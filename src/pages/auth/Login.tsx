@@ -1,5 +1,7 @@
 import { Icon } from "@iconify/react";
+import { FirebaseError } from "firebase/app";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
@@ -14,12 +16,21 @@ export default function Login() {
     try {
       await signInWithPopup(auth, provider);
     } catch (error) {
-      //if (error instanceof FirebaseError) {
-      //  handleFirebaseError(toast.error, error, [
-      //    "auth/popup-closed-by-user",
-      //    "auth/cancelled-popup-request",
-      //  ]);
-      //}
+      if (error instanceof FirebaseError) {
+        const errorMapping = new Map();
+
+        errorMapping.set(
+          "auth/too-many-requests",
+          "Demasiadas peticiones. Inténtalo más tarde.",
+        );
+
+        errorMapping.set(
+          "auth/cancelled-popup-request",
+          "Se ha cancelado el inicio de sesión.",
+        );
+
+        toast.error(errorMapping.get(error.code) || error.code);
+      }
 
       console.error(error);
     }

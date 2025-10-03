@@ -2,6 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
 
 import store from "@/redux/store";
+import { getAccountInfo } from "@/services/user";
 
 import {
   FIREBASE_API_KEY,
@@ -21,14 +22,12 @@ const app = initializeApp({
 
 const auth = getAuth(app);
 
-auth.onAuthStateChanged((user) => {
+auth.onAuthStateChanged(async (user) => {
   if (user) {
+    const info = await getAccountInfo();
     store.dispatch({
       type: "auth/login",
-      payload: {
-        name: user.displayName,
-        email: user.email,
-      },
+      payload: info,
     });
   } else {
     store.dispatch({

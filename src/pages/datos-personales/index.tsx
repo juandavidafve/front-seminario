@@ -1,30 +1,41 @@
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { z } from "zod";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import FormInput from "@/components/ui/form-input";
-import { useAppSelector } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { update } from "@/redux/slices/authSlice";
+import { UserFormSchema, type UserForm } from "@/schemas/User";
+import { setAccountInfo } from "@/services/user";
 
 export default function DatosPersonales() {
-  const formSchema = z.object({
-    email: z.email(),
-    name: z.string().min(3),
-  });
-
+  const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const [loading, setLoading] = useState(false);
+
+  const form = useForm<UserForm>({
+    resolver: zodResolver(UserFormSchema),
     defaultValues: {
       email: user?.email,
-      name: "",
+      name: user?.name,
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: UserForm) {
+    try {
+      setLoading(true);
+      const updatedValues = await setAccountInfo(values);
+      dispatch(update(updatedValues));
+      toast.success("Información actualizada correctamente.");
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
@@ -42,7 +53,7 @@ export default function DatosPersonales() {
             disabled
           />
           <FormInput control={form.control} name="name" label="Nombre" />
-          <Button type="submit" className="w-fit">
+          <Button type="submit" className="w-fit" disabled={loading}>
             Guardar
           </Button>
         </form>

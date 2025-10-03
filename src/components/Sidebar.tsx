@@ -9,6 +9,7 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
+import { useAppSelector } from "@/hooks/redux";
 import { auth } from "@/lib/firebase";
 import { cn } from "@/lib/utils";
 
@@ -20,6 +21,7 @@ interface NavItem {
 }
 
 export default function Sidebar() {
+  const user = useAppSelector((state) => state.auth.user);
   const { pathname } = useLocation();
 
   const navItems: NavItem[] = [
@@ -82,7 +84,19 @@ export default function Sidebar() {
               <Icon icon="mingcute:user-4-fill" className="size-6" />
             </PopoverTrigger>
             <PopoverContent className="flex w-fit flex-col items-center">
-              <p className="text-center font-bold">Usuario</p>
+              <p className="text-center font-bold">{user?.name}</p>
+              {user?.roles.map((role) => {
+                const roleMap = {
+                  ROLE_USER: "Usuario",
+                  ROLE_ADMIN: "Administrador",
+                };
+
+                return (
+                  <p className="text-center" key={role}>
+                    {roleMap[role]}
+                  </p>
+                );
+              })}
 
               <Separator className="my-2" />
 
