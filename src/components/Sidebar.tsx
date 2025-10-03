@@ -29,6 +29,7 @@ export default function Sidebar() {
       label: "Usuarios",
       icon: "material-symbols:person-outline-rounded",
       url: "usuarios",
+      show: user?.roles.includes("ROLE_ADMIN"),
     },
     {
       label: "Datos Personales",
@@ -85,18 +86,11 @@ export default function Sidebar() {
             </PopoverTrigger>
             <PopoverContent className="flex w-fit flex-col items-center">
               <p className="text-center font-bold">{user?.name}</p>
-              {user?.roles.map((role) => {
-                const roleMap = {
-                  ROLE_USER: "Usuario",
-                  ROLE_ADMIN: "Administrador",
-                };
-
-                return (
-                  <p className="text-center" key={role}>
-                    {roleMap[role]}
-                  </p>
-                );
-              })}
+              <p className="text-center">
+                {user?.roles.includes("ROLE_ADMIN")
+                  ? "Administrador"
+                  : "Usuario"}
+              </p>
 
               <Separator className="my-2" />
 

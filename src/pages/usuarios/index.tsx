@@ -71,22 +71,30 @@ export default function Usuarios() {
       </Form>
 
       <div className="my-6 space-y-4">
-        {filteredUsers.length === 0 && (
+        {filteredUsers.length === 0 && usersReq.loading && (
+          <div className="my-10 flex items-center justify-center">
+            <Icon
+              icon="svg-spinners:blocks-shuffle-3"
+              className="size-12 text-primary"
+            />
+          </div>
+        )}
+        {filteredUsers.length === 0 && !usersReq.loading && (
           <p className="text-center font-bold">Sin resultados</p>
         )}
         {filteredUsers.map((user) => {
           return (
             <Card key={user.uid}>
-              <CardContent className="grid grid-cols-[auto_1fr_auto] gap-4">
+              <CardContent className="grid grid-cols-[1fr_auto] gap-4 md:grid-cols-[auto_1fr_auto] md:grid-rows-1">
                 <Icon
                   icon="material-symbols:person-outline-rounded"
                   className="size-12 text-primary"
                 />
-                <div>
+                <div className="col-span-2 md:col-span-1">
                   <h2 className="font-bold">{user.name}</h2>
                   {user.email}
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="col-start-2 row-start-1 flex items-center gap-2 md:col-start-3">
                   Admin
                   <Switch
                     checked={user.roles.includes("ROLE_ADMIN")}
