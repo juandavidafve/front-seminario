@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from "firebase/auth";
+import { toast } from "sonner";
 
 import store from "@/redux/store";
 import { getAccountInfo } from "@/services/user";
@@ -24,6 +25,12 @@ const auth = getAuth(app);
 
 auth.onAuthStateChanged(async (user) => {
   if (user) {
+    if (!user.email?.endsWith("@ufps.edu.co")) {
+      toast.error("Solo se permiten correos @ufps.edu.co");
+      await auth.signOut();
+      return;
+    }
+
     const info = await getAccountInfo();
     store.dispatch({
       type: "auth/login",
