@@ -2,6 +2,7 @@ import { Icon } from "@iconify/react";
 import { HashRouter, Routes, Route, Navigate } from "react-router";
 
 import { useAppSelector } from "@/hooks/redux";
+import Welcome from "@/pages/Welcome";
 import Login from "@/pages/auth/Login";
 import DatosPersonales from "@/pages/datos-personales";
 import Usuarios from "@/pages/usuarios";
@@ -28,7 +29,7 @@ export default function Router() {
         <Route
           element={user !== null ? <Layout /> : <Navigate to="/auth/login" />}
         >
-          <Route index />
+          <Route index element={<Welcome />} />
           <Route path="datos-personales" element={<DatosPersonales />} />
 
           {user?.roles.includes("ROLE_ADMIN") && (

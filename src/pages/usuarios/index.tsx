@@ -52,7 +52,7 @@ export default function Usuarios() {
 
   return (
     <>
-      <h1 className="mb-8 text-2xl font-bold">Datos Personales</h1>
+      <h1 className="mb-8 text-2xl font-bold">Usuarios</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}

@@ -1,6 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useState } from "react";
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -23,31 +23,29 @@ interface NavItem {
 export default function Sidebar() {
   const user = useAppSelector((state) => state.auth.user);
   const { pathname } = useLocation();
+  const navigate = useNavigate();
 
   const navItems: NavItem[] = [
     {
       label: "Usuarios",
-      icon: "material-symbols:person-outline-rounded",
-      url: "usuarios",
+      icon: "material-symbols:supervised-user-circle-outline",
+      url: "/usuarios",
       show: user?.roles.includes("ROLE_ADMIN"),
     },
     {
       label: "Datos Personales",
-      icon: "material-symbols:database-outline",
-      url: "datos-personales",
+      icon: "material-symbols:id-card-outline-rounded",
+      url: "/datos-personales",
     },
   ];
 
-  const currentItemPath = pathname.split("/")[2];
-  const currentNavItem =
-    currentItemPath?.length > 0
-      ? navItems.find((item) => item.url === currentItemPath)
-      : undefined;
+  const currentNavItem = navItems.find((item) => item.url === pathname);
 
   const [collapsed, setCollapsed] = useState(true);
 
   async function handleLogout() {
     await auth.signOut();
+    navigate("/");
   }
 
   return (
