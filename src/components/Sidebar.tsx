@@ -32,6 +32,12 @@ export default function Sidebar() {
       show: user?.roles.includes("ROLE_ADMIN"),
     },
     {
+      label: "Pensum",
+      icon: "material-symbols:school-outline-rounded",
+      url: "/pensum",
+      show: user?.roles.includes("ROLE_ADMIN"),
+    },
+    {
       label: "Datos Personales",
       icon: "material-symbols:id-card-outline-rounded",
       url: "/datos-personales",

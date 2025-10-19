@@ -5,6 +5,7 @@ import { useAppSelector } from "@/hooks/redux";
 import Welcome from "@/pages/Welcome";
 import Login from "@/pages/auth/Login";
 import DatosPersonales from "@/pages/datos-personales";
+import Pensum from "@/pages/pensum";
 import Usuarios from "@/pages/usuarios";
 
 import Layout from "./Layout";
@@ -33,7 +34,10 @@ export default function Router() {
           <Route path="datos-personales" element={<DatosPersonales />} />
 
           {user?.roles.includes("ROLE_ADMIN") && (
-            <Route path="usuarios" element={<Usuarios />} />
+            <>
+              <Route path="usuarios" element={<Usuarios />} />
+              <Route path="pensum" element={<Pensum />} />
+            </>
           )}
         </Route>
 
