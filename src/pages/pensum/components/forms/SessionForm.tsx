@@ -56,15 +56,20 @@ export default function SessionForm({ control, groupIndex }: Props) {
         </Button>
       </div>
 
-      <div className="mt-4 grid grid-cols-[repeat(4,1fr)_auto] gap-2">
-        <span className="text-center font-medium">Día</span>
-        <span className="text-center font-medium">Inicio</span>
-        <span className="text-center font-medium">Fin</span>
-        <span className="text-center font-medium">Aula</span>
-        <Button size="icon" disabled variant="ghost"></Button>
+      <div className="mt-4 space-y-2">
+        <div className="grid grid-cols-[repeat(4,1fr)_auto] gap-2">
+          <span className="text-center font-medium">Día</span>
+          <span className="text-center font-medium">Inicio</span>
+          <span className="text-center font-medium">Fin</span>
+          <span className="text-center font-medium">Aula</span>
+          <Button size="icon" disabled variant="ghost"></Button>
+        </div>
 
-        {sessions.map((_, sIndex) => (
-          <>
+        {sessions.map((session, sIndex) => (
+          <div
+            className="grid grid-cols-[repeat(4,1fr)_auto] gap-2"
+            key={session.id}
+          >
             <FormSelect
               control={control}
               name={`groups.${groupIndex}.sessions.${sIndex}.day`}
@@ -110,7 +115,7 @@ export default function SessionForm({ control, groupIndex }: Props) {
                 className="size-5"
               />
             </Button>
-          </>
+          </div>
         ))}
       </div>
     </div>

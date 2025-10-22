@@ -8,7 +8,6 @@ export const SubjectTypeEnum = z.enum([
 ]);
 
 export const SessionSchema = z.object({
-  id: z.int().nonnegative(),
   /**
    * 0: Monday
    * ...
@@ -25,38 +24,68 @@ export const SessionSchema = z.object({
   classroom: z.string(),
 });
 
-export const GroupSchema = z.object({
-  id: z.int().nonnegative(),
-  code: z.string(),
-  teacher: z.string(),
-  program: z.string(),
-  maxCapacity: z.int().nonnegative(),
-  availableCapacity: z.int().nonnegative(),
-  sessions: z.array(SessionSchema),
-  //currentTeacher: z.boolean(),
-});
+export const GroupSchema = z
+  .object({
+    code: z.string(),
+    teacher: z.string(),
+    program: z.string(),
+    maxCapacity: z.int().nonnegative(),
+    availableCapacity: z.int().nonnegative(),
+    sessions: z.array(SessionSchema),
+    //currentTeacher: z.boolean(),
+  })
+  .superRefine((group, ctx) => {
+    // Validar que no haya cruce de horarios
+    const schedule = Array.from({ length: 6 }, () => Array(17).fill(false));
+
+    for (let i = 0; i < group.sessions.length; i++) {
+      const session = group.sessions[i];
+      const duration = session.endHour - session.beginHour;
+
+      for (let j = 0; j < duration; j++) {
+        const pos = session.beginHour + j;
+        if (!schedule[session.day][pos]) {
+          schedule[session.day][pos] = true;
+        } else {
+          ctx.addIssue({
+            code: "custom",
+            message: "Hay sesiones que se cruzan.",
+            path: ["sessions", i, "beginHour"],
+          });
+        }
+      }
+    }
+
+    // Validar que cada sesión tenga beginHour < endHour
+    group.sessions.forEach((s, index) => {
+      if (s.beginHour >= s.endHour) {
+        ctx.addIssue({
+          code: "custom",
+          message: "La hora de fin debe ser mayor que la hora de inicio.",
+          path: ["sessions", index, "beginHour"],
+        });
+      }
+    });
+  });
 
 export const RequisiteSchema = z.object({
-  id: z.int().nonnegative(),
   name: z.string(),
   code: z.string(),
 });
 
 export const SubjectSchema = z.object({
-  id: z.int().nonnegative(),
   code: z.string(),
   name: z.string(),
   credits: z.int().positive(),
   hours: z.int().positive(),
   semester: z.int().positive(),
-  requiredCredits: z.int().positive(),
+  requiredCredits: z.int().min(0),
   type: SubjectTypeEnum,
   groups: z.array(GroupSchema),
   requisites: z.array(RequisiteSchema),
 });
 
 export const PensumSchema = z.object({
-  id: z.int().nonnegative(),
   name: z.string(),
   semesters: z.int().positive(),
   subjects: z.array(SubjectSchema),

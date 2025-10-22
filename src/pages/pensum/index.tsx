@@ -6,8 +6,7 @@ import { useAppDispatch } from "@/hooks/redux";
 import { setPensum } from "@/redux/slices/pensumSlice";
 import { getPensum } from "@/services/pensum";
 
-import PensumGraph from "./components/PensumGraph";
-import { SubjectForm } from "./components/SubjectForm";
+import PensumGraph from "./components/graph/PensumGraph";
 
 export default function Pensum() {
   const dispatch = useAppDispatch();
@@ -22,8 +21,8 @@ export default function Pensum() {
   return (
     <>
       <h1 className="mb-8 text-2xl font-bold">Pensum</h1>
+
       <PensumGraph />
-      <SubjectForm onSubmit={console.log} />
     </>
   );
 }

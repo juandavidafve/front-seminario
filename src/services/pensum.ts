@@ -49,7 +49,7 @@ export async function getPensum() {
         groups: [
           {
             id: 2,
-            code: "A",
+            code: "B",
             teacher: "Dra. María Gómez",
             program: "2025-A",
             maxCapacity: 35,
@@ -60,33 +60,6 @@ export async function getPensum() {
           },
         ],
         requisites: [{ id: 1, name: "Matemáticas I", code: "1150201" }],
-      },
-
-      {
-        id: 3,
-        code: "1151059",
-        name: "Sistemas distribuidos",
-        credits: 3,
-        hours: 3,
-        semester: 10,
-        requiredCredits: 20,
-        type: "ELECTIVE",
-        groups: [
-          {
-            id: 3,
-            code: "A",
-            teacher: "Ing. Luis Torres",
-            program: "2025-A",
-            maxCapacity: 30,
-            availableCapacity: 5,
-            sessions: [
-              { id: 4, day: 4, beginHour: 6, endHour: 8, classroom: "D301" },
-            ],
-          },
-        ],
-        requisites: [
-          { id: 10, name: "Redes y comunicaciones", code: "1150604" },
-        ],
       },
     ],
   };

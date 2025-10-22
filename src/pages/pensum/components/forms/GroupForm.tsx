@@ -32,7 +32,6 @@ export default function GroupForm({ control }: Props) {
           size="sm"
           onClick={() =>
             append({
-              id: 0,
               code: "",
               teacher: "",
               program: "",
@@ -46,8 +45,8 @@ export default function GroupForm({ control }: Props) {
           Añadir Grupo
         </Button>
       </div>
-      {groups.map((_, index) => (
-        <Card>
+      {groups.map((group, index) => (
+        <Card key={group.code}>
           <CardContent className="space-y-4">
             <FormInput
               control={control}
