@@ -5,6 +5,8 @@ import {
   Controls,
   Panel,
   ReactFlow,
+  type EdgeChange,
+  type NodeChange,
   type ReactFlowProps,
 } from "@xyflow/react";
 import { useCallback, useEffect, useState } from "react";
@@ -84,11 +86,19 @@ export default function PensumGraph() {
     dispatch(removeSubject(subject.code));
   }
 
-  const onNodesChange = useCallback((changes) => {
-    setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot));
+  const onNodesChange = useCallback((changes: NodeChange[]) => {
+    setNodes((nodesSnapshot) => {
+      if (!nodesSnapshot) return;
+      return applyNodeChanges(changes, nodesSnapshot);
+    });
   }, []);
-  const onEdgesChange = useCallback((changes) => {
-    setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot));
+
+  const onEdgesChange = useCallback((changes: EdgeChange[]) => {
+    setEdges((edgesSnapshot) => {
+      if (!edgesSnapshot) return;
+
+      return applyEdgeChanges(changes, edgesSnapshot);
+    });
   }, []);
 
   return (

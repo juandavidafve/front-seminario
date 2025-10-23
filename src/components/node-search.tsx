@@ -15,12 +15,6 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 
 export interface NodeSearchProps extends Omit<PanelProps, "children"> {
   // The function to search for nodes, should return an array of nodes that match the search string
@@ -33,17 +27,12 @@ export interface NodeSearchProps extends Omit<PanelProps, "children"> {
   onOpenChange?: (open: boolean) => void;
 }
 
-export const NodeSearchInternal = forwardRef(function NodeSearch(
-  {
-    className,
-    onSearch,
-    onSelectNode,
-    open,
-    onOpenChange,
-    ...props
-  }: NodeSearchProps,
-  ref: React.Ref<HTMLDivElement>,
-) {
+export const NodeSearchInternal = forwardRef(function NodeSearch({
+  onSearch,
+  onSelectNode,
+  open,
+  onOpenChange,
+}: NodeSearchProps) {
   const [searchResults, setSearchResults] = useState<Node[]>([]);
   const [searchString, setSearchString] = useState<string>("");
   const { getNodes, fitView, setNodes } = useReactFlow<Node, BuiltInEdge>();
