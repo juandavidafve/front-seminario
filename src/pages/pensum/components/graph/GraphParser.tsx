@@ -1,12 +1,18 @@
 import type { ReactFlowProps } from "@xyflow/react";
 
-import type { Pensum } from "@/schemas/Pensum";
+import type { Pensum, Subject } from "@/schemas/Pensum";
 
 const NODE_WIDTH = 200;
 const NODE_HEIGHT = 100;
 const SPACING = 25;
 
-export default function parse(pensum: Pensum) {
+interface Actions {
+  onView?: (s: Subject) => void;
+  onEdit?: (s: Subject) => void;
+  onDelete?: (s: Subject) => void;
+}
+
+export default function parse(pensum: Pensum, actions: Actions) {
   const semesterCounter: number[] = Array(pensum.semesters + 1).fill(0);
 
   const nodes: ReactFlowProps["nodes"] = pensum.subjects.map((subject) => {
@@ -18,7 +24,10 @@ export default function parse(pensum: Pensum) {
         x: SPACING,
         y: SPACING * 3 + semesterCounter[semester] * (NODE_HEIGHT + SPACING),
       },
-      data: subject,
+      data: {
+        subject,
+        ...actions,
+      },
       parentId: `semester-${semester}`,
       extent: "parent",
       type: "subjectNode",

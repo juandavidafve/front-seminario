@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { FormLabel } from "@/components/ui/form";
 import FormInput from "@/components/ui/form-input";
+import FormInputNumber from "@/components/ui/form-input-number";
 import type { Subject } from "@/schemas/Pensum";
 
 import SessionForm from "./SessionForm";
@@ -63,12 +64,12 @@ export default function GroupForm({ control }: Props) {
               name={`groups.${index}.program`}
               label="Programa"
             />
-            <FormInput
+            <FormInputNumber
               control={control}
               name={`groups.${index}.maxCapacity`}
               label="Cupos"
             />
-            <FormInput
+            <FormInputNumber
               control={control}
               name={`groups.${index}.availableCapacity`}
               label="Disponible"

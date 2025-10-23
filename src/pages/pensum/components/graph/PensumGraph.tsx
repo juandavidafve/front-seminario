@@ -6,7 +6,6 @@ import {
   Controls,
   Panel,
   ReactFlow,
-  type NodeMouseHandler,
   type ReactFlowProps,
 } from "@xyflow/react";
 import { useCallback, useEffect, useState } from "react";
@@ -15,7 +14,11 @@ import { GroupNode } from "@/components/labeled-group-node";
 import { NodeSearch } from "@/components/node-search";
 import { Button } from "@/components/ui/button";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { insertSubject, updateSubject } from "@/redux/slices/pensumSlice";
+import {
+  insertSubject,
+  removeSubject,
+  updateSubject,
+} from "@/redux/slices/pensumSlice";
 import { SubjectSchema, type Subject } from "@/schemas/Pensum";
 
 import { SubjectForm } from "../forms/SubjectForm";
@@ -42,25 +45,35 @@ export default function PensumGraph() {
 
   useEffect(() => {
     if (!pensum) return;
-    const parsed = parse(pensum);
+    const parsed = parse(pensum, {
+      onEdit: openEditForm,
+      onDelete: handleDelete,
+    });
 
     setNodes(parsed.nodes);
     setEdges(parsed.edges);
   }, [pensum]);
 
-  const onNodeClick: NodeMouseHandler = useCallback((_event, node) => {
-    const { data: subject } = SubjectSchema.safeParse(node.data);
+  function openCreateForm() {
+    setFormDefaults(undefined);
+    setShowForm(true);
+    setFormAction(() => (s: Subject) => {
+      dispatch(insertSubject(s));
+    });
+  }
 
-    if (!subject) return;
-
+  function openEditForm(subject: Subject) {
     const { code } = subject;
-
     setFormDefaults(subject);
     setShowForm(true);
     setFormAction(() => (subject: Subject) => {
       dispatch(updateSubject({ subject, code }));
     });
-  }, []);
+  }
+
+  function handleDelete(subject: Subject) {
+    dispatch(removeSubject(subject.code));
+  }
 
   const onNodesChange = useCallback((changes) => {
     console.log("onNodesChange");
@@ -91,7 +104,6 @@ export default function PensumGraph() {
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
-            onNodeClick={onNodeClick}
             nodeTypes={nodeTypes}
             fitView
           >
@@ -139,17 +151,7 @@ export default function PensumGraph() {
             </Panel>
 
             <Panel position="top-right">
-              <Button
-                onClick={() => {
-                  setFormDefaults(undefined);
-                  setShowForm(true);
-                  setFormAction(() => (s: Subject) => {
-                    dispatch(insertSubject(s));
-                  });
-                }}
-              >
-                Agregar
-              </Button>
+              <Button onClick={openCreateForm}>Agregar</Button>
             </Panel>
           </ReactFlow>
         </div>
