@@ -43,7 +43,6 @@ export default function SessionForm({ control, groupIndex }: Props) {
           size="sm"
           onClick={() =>
             append({
-              id: 0,
               day: 0,
               beginHour: 0,
               endHour: 1,
