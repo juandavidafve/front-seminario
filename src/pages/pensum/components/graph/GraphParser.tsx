@@ -44,10 +44,31 @@ export default function parse(pensum: Pensum, actions: Actions) {
     const edges: ReactFlowProps["edges"] = [];
 
     for (const requisite of subject.requisites) {
+      const colors = [
+        "[--xy-edge-stroke:theme(colors.red.500)]",
+        "[--xy-edge-stroke:theme(colors.orange.500)]",
+        "[--xy-edge-stroke:theme(colors.amber.500)]",
+        "[--xy-edge-stroke:theme(colors.yellow.500)]",
+        "[--xy-edge-stroke:theme(colors.lime.500)]",
+        "[--xy-edge-stroke:theme(colors.green.500)]",
+        "[--xy-edge-stroke:theme(colors.emerald.500)]",
+        "[--xy-edge-stroke:theme(colors.teal.500)]",
+        "[--xy-edge-stroke:theme(colors.cyan.500)]",
+        "[--xy-edge-stroke:theme(colors.sky.500)]",
+        "[--xy-edge-stroke:theme(colors.blue.500)]",
+        "[--xy-edge-stroke:theme(colors.indigo.500)]",
+        "[--xy-edge-stroke:theme(colors.violet.500)]",
+        "[--xy-edge-stroke:theme(colors.purple.500)]",
+        "[--xy-edge-stroke:theme(colors.fuchsia.500)]",
+        "[--xy-edge-stroke:theme(colors.pink.500)]",
+        "[--xy-edge-stroke:theme(colors.rose.500)]",
+      ];
+
       edges.push({
         id: `${requisite.code}-${subject.code}`,
         source: requisite.code,
         target: subject.code,
+        className: colors[Math.floor(Math.random() * colors.length)],
       });
     }
 
