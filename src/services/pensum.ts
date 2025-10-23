@@ -2,11 +2,15 @@ import { api } from "@/lib/axios";
 import { PensumSchema, type Pensum } from "@/schemas/Pensum";
 
 export async function getPensum() {
+  const response = await api.get("/pensum");
+
   //const req = await api.get(
   //  "https://divisistapp-backend-service-mgewfl33zq-uc.a.run.app//materias/pensum/115",
   //);
 
-  const data: Pensum = {
+  const data: Pensum = response.data;
+
+  /*   const data: Pensum = {
     id: 1,
     name: "Ingeniería de Sistemas - Pensum Ejemplo 2025",
     semesters: 10,
@@ -62,7 +66,13 @@ export async function getPensum() {
         requisites: [{ id: 1, name: "Matemáticas I", code: "1150201" }],
       },
     ],
-  };
+  }; */
 
   return data;
+}
+
+export async function savePensum(pensum: Pensum) {
+  const requestData = { ...pensum, updateTeachers: true }; // Así para que actualice la información de maestros
+  const response = await api.post("/pensum", requestData);
+  return response.data;
 }

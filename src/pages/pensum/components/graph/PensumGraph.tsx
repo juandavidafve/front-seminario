@@ -17,9 +17,11 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import {
   insertSubject,
   removeSubject,
+  setPensum,
   updateSubject,
 } from "@/redux/slices/pensumSlice";
 import { SubjectSchema, type Subject } from "@/schemas/Pensum";
+import { savePensum } from "@/services/pensum";
 
 import { SubjectForm } from "../forms/SubjectForm";
 import parse from "./GraphParser";
@@ -42,6 +44,11 @@ export default function PensumGraph() {
   const [formAction, setFormAction] = useState<(s: Subject) => void>(
     () => () => {},
   );
+
+  async function callSavePensum() {
+    const data = await savePensum(pensum!);
+    setPensum(data);
+  }
 
   useEffect(() => {
     if (!pensum) return;
@@ -152,6 +159,7 @@ export default function PensumGraph() {
 
             <Panel position="top-right">
               <Button onClick={openCreateForm}>Agregar</Button>
+              <Button onClick={callSavePensum}>Guardar</Button>
             </Panel>
           </ReactFlow>
         </div>
