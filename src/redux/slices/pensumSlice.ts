@@ -4,10 +4,12 @@ import type { Pensum, Subject } from "@/schemas/Pensum";
 
 interface PensumState {
   data: Pensum | null;
+  hasChanged: boolean;
 }
 
 const initialState: PensumState = {
   data: null,
+  hasChanged: false,
 };
 
 export const pensumSlice = createSlice({
@@ -16,12 +18,14 @@ export const pensumSlice = createSlice({
   reducers: {
     setPensum(state, action: PayloadAction<Pensum>) {
       state.data = action.payload;
+      state.hasChanged = false;
     },
 
     insertSubject(state, action: PayloadAction<Subject>) {
       if (!state.data) return;
 
       state.data.subjects.push(action.payload);
+      state.hasChanged = true;
     },
 
     updateSubject(
@@ -47,6 +51,7 @@ export const pensumSlice = createSlice({
       // Caso 1: el nuevo código es el mismo → solo actualizo
       if (subject.code === code) {
         state.data.subjects[oldIndex] = subject;
+        state.hasChanged = true;
         return;
       }
 
@@ -58,6 +63,7 @@ export const pensumSlice = createSlice({
       // Caso 3: cambia el code y no hay conflicto → reemplazo
       state.data.subjects.splice(oldIndex, 1);
       state.data.subjects.push(subject);
+      state.hasChanged = true;
     },
 
     removeSubject(state, action: PayloadAction<string>) {
@@ -65,6 +71,7 @@ export const pensumSlice = createSlice({
       state.data.subjects = state.data.subjects.filter(
         (s) => s.code !== action.payload,
       );
+      state.hasChanged = true;
     },
   },
 });

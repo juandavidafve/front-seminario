@@ -8,6 +8,7 @@ import {
   type ReactFlowProps,
 } from "@xyflow/react";
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "sonner";
 
 import { GroupNode } from "@/components/labeled-group-node";
 import { NodeSearch } from "@/components/node-search";
@@ -33,6 +34,7 @@ const nodeTypes = {
 
 export default function PensumGraph() {
   const dispatch = useAppDispatch();
+  const pensumChanged = useAppSelector((state) => state.pensum.hasChanged);
   const pensum = useAppSelector((state) => state.pensum.data);
   const [nodes, setNodes] = useState<ReactFlowProps["nodes"]>();
   const [edges, setEdges] = useState<ReactFlowProps["edges"]>();
@@ -46,7 +48,8 @@ export default function PensumGraph() {
 
   async function callSavePensum() {
     const data = await savePensum(pensum!);
-    setPensum(data);
+    dispatch(setPensum(data));
+    toast.success("Pensum actualizado correctamente");
   }
 
   useEffect(() => {
@@ -150,9 +153,11 @@ export default function PensumGraph() {
               />
             </Panel>
 
-            <Panel position="top-right">
+            <Panel position="top-right" className="flex gap-2">
+              <Button onClick={callSavePensum} disabled={!pensumChanged}>
+                Guardar
+              </Button>
               <Button onClick={openCreateForm}>Agregar</Button>
-              <Button onClick={callSavePensum}>Guardar</Button>
             </Panel>
           </ReactFlow>
         </div>
