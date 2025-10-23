@@ -6,6 +6,7 @@ import {
   type Node,
   type NodeProps,
 } from "@xyflow/react";
+import { useRef } from "react";
 
 import { BaseNode, BaseNodeContent } from "@/components/base-node";
 import { Button } from "@/components/ui/button";
@@ -44,6 +45,8 @@ export default function SubjectNode({ data }: NodeProps<Node<Props>>) {
     "bg-rose-50",
   ];
 
+  const color = useRef(colors[Math.floor(Math.random() * colors.length)]);
+
   return (
     <>
       <NodeToolbar
@@ -62,7 +65,7 @@ export default function SubjectNode({ data }: NodeProps<Node<Props>>) {
         className={cn(
           "h-[100px] w-[200px] shadow",
           isElective ? "bg-secondary" : "",
-          colors[Math.floor(Math.random() * colors.length)],
+          color.current,
         )}
       >
         <BaseNodeContent className="flex h-full flex-col items-center justify-center">
