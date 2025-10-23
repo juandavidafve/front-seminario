@@ -1,5 +1,4 @@
 import {
-  addEdge,
   applyEdgeChanges,
   applyNodeChanges,
   Background,
@@ -83,16 +82,10 @@ export default function PensumGraph() {
   }
 
   const onNodesChange = useCallback((changes) => {
-    console.log("onNodesChange");
     setNodes((nodesSnapshot) => applyNodeChanges(changes, nodesSnapshot));
   }, []);
   const onEdgesChange = useCallback((changes) => {
-    console.log("onEdgesChange");
     setEdges((edgesSnapshot) => applyEdgeChanges(changes, edgesSnapshot));
-  }, []);
-  const onConnect = useCallback((params) => {
-    setEdges((edgesSnapshot) => addEdge(params, edgesSnapshot));
-    console.log("onConnect");
   }, []);
 
   return (
@@ -110,7 +103,6 @@ export default function PensumGraph() {
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
             nodeTypes={nodeTypes}
             fitView
           >
@@ -123,11 +115,12 @@ export default function PensumGraph() {
               <NodeSearch
                 onSearch={(query) => {
                   const lQuery = query.toLowerCase();
+
                   if (!nodes) return [];
 
                   const filteredNodes = nodes.filter((node) => {
                     const { data: subject } = SubjectSchema.safeParse(
-                      node.data,
+                      node.data.subject,
                     );
 
                     if (!subject) return false;
@@ -140,7 +133,7 @@ export default function PensumGraph() {
 
                   return filteredNodes.map((node) => {
                     const { data: subject } = SubjectSchema.safeParse(
-                      node.data,
+                      node.data.subject,
                     );
 
                     if (!subject) return node;
