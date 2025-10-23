@@ -1,30 +1,26 @@
-import type { Control, FieldValues, Path } from "react-hook-form";
+import { type Control, type FieldValues, type Path } from "react-hook-form";
+
+import { Checkbox } from "@/components/ui/checkbox";
 
 import {
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from "./form";
-import { Input } from "./input";
 
-interface FormInputProps<T extends FieldValues>
-  extends React.ComponentProps<"input"> {
+interface FormCheckboxProps<T extends FieldValues> {
   name: Path<T>;
   control: Control<T, unknown, T>;
   label?: string;
-  description?: string;
 }
 
-export default function FormInput<T extends FieldValues>({
+export default function FormCheckbox<T extends FieldValues>({
   name,
   control,
   label,
-  description,
-  ...props
-}: FormInputProps<T>) {
+}: FormCheckboxProps<T>) {
   return (
     <FormField
       control={control}
@@ -33,9 +29,8 @@ export default function FormInput<T extends FieldValues>({
         <FormItem>
           {label && <FormLabel>{label}</FormLabel>}
           <FormControl>
-            <Input {...field} {...props} />
+            <Checkbox checked={field.value} onCheckedChange={field.onChange} />
           </FormControl>
-          {description && <FormDescription>{description}</FormDescription>}
           <FormMessage />
         </FormItem>
       )}
