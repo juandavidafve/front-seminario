@@ -10,6 +10,7 @@ import { useRef } from "react";
 
 import { BaseNode, BaseNodeContent } from "@/components/base-node";
 import { Button } from "@/components/ui/button";
+import { useAppSelector } from "@/hooks/redux";
 import { cn } from "@/lib/utils";
 import type { Subject } from "@/schemas/Pensum";
 
@@ -22,6 +23,7 @@ interface Props extends Record<string, unknown> {
 
 export default function SubjectNode({ data }: NodeProps<Node<Props>>) {
   const { subject, onDelete, onEdit } = data;
+  const user = useAppSelector((state) => state.auth.user);
 
   const isElective = subject.type.includes("ELECTIVE");
 
@@ -49,18 +51,20 @@ export default function SubjectNode({ data }: NodeProps<Node<Props>>) {
 
   return (
     <>
-      <NodeToolbar
-        position={Position.Top}
-        align="center"
-        className="flex gap-1"
-      >
-        <Button size="icon" onClick={() => onEdit(subject)}>
-          <Icon icon="material-symbols:edit-outline-rounded"></Icon>
-        </Button>
-        <Button size="icon" onClick={() => onDelete(subject)}>
-          <Icon icon="material-symbols:delete-outline-rounded"></Icon>
-        </Button>
-      </NodeToolbar>
+      {user?.roles.includes("ROLE_ADMIN") && (
+        <NodeToolbar
+          position={Position.Top}
+          align="center"
+          className="flex gap-1"
+        >
+          <Button size="icon" onClick={() => onEdit(subject)}>
+            <Icon icon="material-symbols:edit-outline-rounded"></Icon>
+          </Button>
+          <Button size="icon" onClick={() => onDelete(subject)}>
+            <Icon icon="material-symbols:delete-outline-rounded"></Icon>
+          </Button>
+        </NodeToolbar>
+      )}
       <BaseNode
         className={cn(
           "h-[100px] w-[200px] shadow",

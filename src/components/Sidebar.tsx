@@ -35,7 +35,6 @@ export default function Sidebar() {
       label: "Pensum",
       icon: "material-symbols:school-outline-rounded",
       url: "/pensum",
-      show: user?.roles.includes("ROLE_ADMIN"),
     },
     {
       label: "Datos Personales",

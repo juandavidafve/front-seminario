@@ -36,6 +36,7 @@ const nodeTypes = {
 
 export default function PensumGraph() {
   const dispatch = useAppDispatch();
+  const user = useAppSelector((state) => state.auth.user);
   const pensumChanged = useAppSelector((state) => state.pensum.hasChanged);
   const pensum = useAppSelector((state) => state.pensum.data);
   const [nodes, setNodes] = useState<ReactFlowProps["nodes"]>();
@@ -163,12 +164,14 @@ export default function PensumGraph() {
               />
             </Panel>
 
-            <Panel position="top-right" className="flex gap-2">
-              <Button onClick={callSavePensum} disabled={!pensumChanged}>
-                Guardar
-              </Button>
-              <Button onClick={openCreateForm}>Agregar</Button>
-            </Panel>
+            {user?.roles.includes("ROLE_ADMIN") && (
+              <Panel position="top-right" className="flex gap-2">
+                <Button onClick={callSavePensum} disabled={!pensumChanged}>
+                  Guardar
+                </Button>
+                <Button onClick={openCreateForm}>Agregar</Button>
+              </Panel>
+            )}
           </ReactFlow>
         </div>
       </div>

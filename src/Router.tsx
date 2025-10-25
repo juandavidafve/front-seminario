@@ -32,11 +32,10 @@ export default function Router() {
         >
           <Route index element={<Welcome />} />
           <Route path="datos-personales" element={<DatosPersonales />} />
-
+          <Route path="pensum" element={<Pensum />} />
           {user?.roles.includes("ROLE_ADMIN") && (
             <>
               <Route path="usuarios" element={<Usuarios />} />
-              <Route path="pensum" element={<Pensum />} />
             </>
           )}
         </Route>
