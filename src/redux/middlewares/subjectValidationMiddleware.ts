@@ -1,7 +1,7 @@
 // src/middlewares/subjectValidationMiddleware.ts
 import type { Middleware } from "@reduxjs/toolkit";
 
-import type { Subject } from "@/schemas/Pensum";
+import type { Pensum, Subject } from "@/schemas/Pensum";
 
 import { SubjectError } from "../errors/SubjectError";
 import { insertSubject, updateSubject } from "../slices/pensumSlice";
@@ -76,6 +76,15 @@ function validateUniqueGroupCodes(subject: Subject, pensumSubjects: Subject[]) {
   }
 }
 
+function validateSemester(subject: Subject, pensum: Pensum) {
+  if (subject.semester > pensum.semesters) {
+    throw new SubjectError(
+      `El semestre no puede ser mayor a ${pensum.semesters}`,
+      "semester",
+    );
+  }
+}
+
 // ------------------------------------------------------
 // ⚙️ Middleware principal
 // ------------------------------------------------------
@@ -93,6 +102,7 @@ export const subjectValidationMiddleware: Middleware =
 
       validateNotExistingSubjectCode(subject.code, pensum.subjects);
       validateUniqueGroupCodes(subject, pensum.subjects);
+      validateSemester(subject, pensum);
     }
 
     // --- Al actualizar ---
@@ -104,6 +114,7 @@ export const subjectValidationMiddleware: Middleware =
       validateExistingSubjectCode(oldCode, pensum.subjects);
       validateUpdatedSubjectCode(newCode, oldCode, pensum.subjects);
       validateUniqueGroupCodes(subject, pensum.subjects);
+      validateSemester(subject, pensum);
     }
 
     return next(action);

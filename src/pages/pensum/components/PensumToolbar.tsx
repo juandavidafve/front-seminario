@@ -1,3 +1,4 @@
+import { Icon } from "@iconify/react";
 import { Panel } from "@xyflow/react";
 import type { ReactFlowProps } from "@xyflow/react";
 
@@ -54,11 +55,15 @@ export function PensumToolbar({ nodes, onSave, onAdd }: Props) {
       </Panel>
 
       {roles?.includes("ROLE_ADMIN") && (
-        <Panel position="top-right" className="flex gap-2">
-          <Button onClick={onSave} disabled={!hasChanged}>
-            Guardar
+        <Panel position="bottom-right" className="!m-6 flex flex-col gap-2">
+          {hasChanged && (
+            <Button onClick={onSave} className="size-11" variant="outline">
+              <Icon icon="material-symbols:save-outline" className="size-6" />
+            </Button>
+          )}
+          <Button onClick={onAdd} className="size-11">
+            <Icon icon="material-symbols:add-2-rounded" className="size-6" />
           </Button>
-          <Button onClick={onAdd}>Agregar</Button>
         </Panel>
       )}
     </>

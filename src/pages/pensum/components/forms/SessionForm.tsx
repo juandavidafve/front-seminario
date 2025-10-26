@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useFieldArray, type Control } from "react-hook-form";
+import { Fragment } from "react/jsx-runtime";
 
 import { Button } from "@/components/ui/button";
 import { FormLabel } from "@/components/ui/form";
@@ -35,7 +36,7 @@ export default function SessionForm({ control, groupIndex }: Props) {
     });
 
   return (
-    <div className="mt-4 border-y py-4">
+    <div className="mt-4 border-y pt-4">
       <div className="mb-2 flex items-center justify-between">
         <FormLabel>Horarios</FormLabel>
         <Button
@@ -55,20 +56,15 @@ export default function SessionForm({ control, groupIndex }: Props) {
         </Button>
       </div>
 
-      <div className="mt-4 space-y-2">
-        <div className="grid grid-cols-[repeat(4,1fr)_auto] gap-2">
-          <span className="text-center font-medium">Día</span>
-          <span className="text-center font-medium">Inicio</span>
-          <span className="text-center font-medium">Fin</span>
-          <span className="text-center font-medium">Aula</span>
-          <Button size="icon" disabled variant="ghost"></Button>
-        </div>
+      <div className="mt-4 grid max-w-[calc(100vw-var(--spacing)*34)] grid-cols-[repeat(4,1fr)_auto] gap-2 overflow-auto pb-4">
+        <span className="text-center font-medium">Día</span>
+        <span className="text-center font-medium">Inicio</span>
+        <span className="text-center font-medium">Fin</span>
+        <span className="text-center font-medium">Aula</span>
+        <Button size="icon" disabled variant="ghost"></Button>
 
         {sessions.map((session, sIndex) => (
-          <div
-            className="grid grid-cols-[repeat(4,1fr)_auto] gap-2"
-            key={session.id}
-          >
+          <Fragment key={session.id}>
             <FormSelect
               control={control}
               name={`groups.${groupIndex}.sessions.${sIndex}.day`}
@@ -104,6 +100,7 @@ export default function SessionForm({ control, groupIndex }: Props) {
             />
 
             <FormInput
+              className="min-w-20"
               control={control}
               name={`groups.${groupIndex}.sessions.${sIndex}.classroom`}
             />
@@ -114,7 +111,7 @@ export default function SessionForm({ control, groupIndex }: Props) {
                 className="size-5"
               />
             </Button>
-          </div>
+          </Fragment>
         ))}
       </div>
     </div>
