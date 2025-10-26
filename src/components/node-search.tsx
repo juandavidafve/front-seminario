@@ -89,12 +89,12 @@ export const NodeSearchInternal = forwardRef(function NodeSearch({
         onFocus={() => onOpenChange?.(true)}
       />
 
-      {open && (
+      {open && searchString.length > 0 && (
         <CommandList>
           {searchResults.length === 0 ? (
-            <CommandEmpty>No results found. {searchString}</CommandEmpty>
+            <CommandEmpty>Sin Resultados. {searchString}</CommandEmpty>
           ) : (
-            <CommandGroup heading="Nodes">
+            <CommandGroup heading="Nodos">
               {searchResults.map((node) => {
                 return (
                   <CommandItem key={node.id} onSelect={() => onSelect(node)}>
@@ -146,7 +146,6 @@ export const NodeSearchDialog = forwardRef(function NodeSearchDialog(
     onSelectNode,
     open,
     onOpenChange,
-    title = "Node Search",
     ...props
   }: NodeSearchDialogProps,
   ref: React.Ref<HTMLDivElement>,

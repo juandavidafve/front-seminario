@@ -23,17 +23,32 @@ export function PensumToolbar({ nodes, onSave, onAdd }: Props) {
         position="top-left"
       >
         <NodeSearch
-          onSearch={(query) => {
+          onSearch={(query): NonNullable<ReactFlowProps["nodes"]> => {
             const lQuery = query.toLowerCase();
             if (!nodes) return [];
-            return nodes.filter((n) => {
-              const { data: subject } = SubjectSchema.safeParse(n.data.subject);
-              return (
-                subject &&
-                (subject.code.toLowerCase().includes(lQuery) ||
-                  subject.name.toLowerCase().includes(lQuery))
-              );
-            });
+
+            const results: NonNullable<ReactFlowProps["nodes"]> = [];
+
+            for (const n of nodes) {
+              const parsed = SubjectSchema.safeParse(n.data.subject);
+              if (!parsed.success) continue;
+              const subject = parsed.data;
+
+              if (
+                subject.code.toLowerCase().includes(lQuery) ||
+                subject.name.toLowerCase().includes(lQuery)
+              ) {
+                results.push({
+                  ...n,
+                  data: {
+                    subject,
+                    label: `${subject.code} - ${subject.name}`,
+                  },
+                });
+              }
+            }
+
+            return results;
           }}
         />
       </Panel>
