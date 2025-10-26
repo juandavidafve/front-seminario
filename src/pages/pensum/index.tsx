@@ -6,7 +6,7 @@ import { useAppDispatch } from "@/hooks/redux";
 import { setPensum } from "@/redux/slices/pensumSlice";
 import { getPensum } from "@/services/pensum";
 
-import PensumGraph from "./components/graph/PensumGraph";
+import PensumManager from "./components/PensumManager";
 
 export default function Pensum() {
   const dispatch = useAppDispatch();
@@ -22,7 +22,7 @@ export default function Pensum() {
     <>
       <h1 className="mb-8 text-2xl font-bold">Pensum</h1>
 
-      <PensumGraph />
+      <PensumManager />
     </>
   );
 }
