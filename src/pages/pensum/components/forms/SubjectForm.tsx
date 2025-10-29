@@ -75,7 +75,7 @@ export function SubjectForm({
         onOpenChange(open);
       }}
     >
-      <AlertDialogContent className="max-h-[calc(100vh-var(--spacing)*8)] overflow-auto">
+      <AlertDialogContent className="max-h-[calc(100vh-var(--spacing)*8)] overflow-auto sm:max-w-xl">
         <AlertDialogHeader>
           <AlertDialogTitle>Materia</AlertDialogTitle>
         </AlertDialogHeader>
