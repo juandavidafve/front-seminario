@@ -119,18 +119,6 @@ export function SubjectForm({
             />
             <FormInputNumber control={control} name="hours" label="Horas" />
 
-            <FormInputNumber
-              control={control}
-              name="semester"
-              label="Semestre"
-            />
-
-            <FormInputNumber
-              control={control}
-              name="requiredCredits"
-              label="Créditos Requeridos"
-            />
-
             <FormSelect
               control={control}
               items={[
@@ -157,7 +145,21 @@ export function SubjectForm({
               itemValue="value"
             />
 
-            {subjects && (
+            <FormInputNumber
+              control={control}
+              name="semester"
+              label="Semestre"
+            />
+
+            {semester > 1 && (
+              <FormInputNumber
+                control={control}
+                name="requiredCredits"
+                label="Créditos Requeridos"
+              />
+            )}
+
+            {subjects && semester > 1 && (
               <FormMultiSelector
                 control={control}
                 name="requisites"
@@ -175,7 +177,7 @@ export function SubjectForm({
               />
             )}
 
-            <GroupForm control={control} />
+            <GroupForm />
 
             <AlertDialogFooter className="mt-8">
               <AlertDialogCancel>Cancelar</AlertDialogCancel>

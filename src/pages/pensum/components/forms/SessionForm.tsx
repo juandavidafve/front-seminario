@@ -1,25 +1,28 @@
 import { Icon } from "@iconify/react";
-import { useFieldArray, type Control } from "react-hook-form";
+import { useFieldArray, useFormContext } from "react-hook-form";
 import { Fragment } from "react/jsx-runtime";
 
 import { Button } from "@/components/ui/button";
-import { FormLabel } from "@/components/ui/form";
+import { FormLabel, FormMessage } from "@/components/ui/form";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
 import type { Subject } from "@/schemas/Pensum";
 
 interface Props {
-  control: Control<Subject, unknown, Subject>;
   groupIndex: number;
 }
 
-export default function SessionForm({ control, groupIndex }: Props) {
+export default function SessionForm({ groupIndex }: Props) {
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<Subject>();
+
   const {
     fields: sessions,
     append,
     remove,
   } = useFieldArray({
-    control,
     name: `groups.${groupIndex}.sessions`,
   });
 
@@ -35,6 +38,7 @@ export default function SessionForm({ control, groupIndex }: Props) {
       };
     });
 
+  const sessionErrors = errors.groups?.[groupIndex]?.sessions;
   return (
     <div className="mt-4 border-y pt-4">
       <div className="mb-2 flex items-center justify-between">
@@ -111,9 +115,21 @@ export default function SessionForm({ control, groupIndex }: Props) {
                 className="size-5"
               />
             </Button>
+
+            {sessionErrors?.[sIndex] && (
+              <FormMessage className="col-span-5">
+                {sessionErrors[sIndex]?.message}
+              </FormMessage>
+            )}
           </Fragment>
         ))}
       </div>
+
+      {sessionErrors?.root && (
+        <FormMessage className="col-span-5">
+          {sessionErrors?.root.message}
+        </FormMessage>
+      )}
     </div>
   );
 }
