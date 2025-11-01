@@ -7,32 +7,40 @@ export const SubjectTypeEnum = z.enum([
   "PROFESSIONAL_ELECTIVE",
 ]);
 
-export const SessionSchema = z.object({
-  /**
-   * 0: Monday
-   * ...
-   * 5: Saturday
-   */
-  day: z.int().min(0).max(5),
-  /**
-   * 0: 06:00
-   * ...
-   * 16: 22:00
-   */
-  beginHour: z.int().min(0).max(16),
-  endHour: z.int().min(0).max(16),
-  classroom: z.string(),
-});
+export const SessionSchema = z
+  .object({
+    /**
+     * 0: Monday
+     * ...
+     * 5: Saturday
+     */
+    day: z.int().min(0).max(5),
+    /**
+     * 0: 06:00
+     * ...
+     * 16: 22:00
+     */
+    beginHour: z.int().min(0).max(16),
+    endHour: z.int().min(0).max(16),
+    classroom: z.string(),
+  })
+  .superRefine((session, ctx) => {
+    if (session.beginHour >= session.endHour) {
+      ctx.addIssue({
+        code: "custom",
+        message: "La hora de fin debe ser mayor que la hora de inicio.",
+      });
+    }
+  });
 
 export const GroupSchema = z
   .object({
-    code: z.string(),
+    code: z.string().nonempty("El código no puede estar vacío"),
     teacher: z.string(),
     program: z.string(),
     maxCapacity: z.int().nonnegative(),
     availableCapacity: z.int().nonnegative(),
     sessions: z.array(SessionSchema),
-    //currentTeacher: z.boolean(),
   })
   .superRefine((group, ctx) => {
     // Validar que no haya cruce de horarios
@@ -49,23 +57,12 @@ export const GroupSchema = z
         } else {
           ctx.addIssue({
             code: "custom",
+            path: ["sessions"],
             message: "Hay sesiones que se cruzan.",
-            path: ["sessions", i, "beginHour"],
           });
         }
       }
     }
-
-    // Validar que cada sesión tenga beginHour < endHour
-    group.sessions.forEach((s, index) => {
-      if (s.beginHour >= s.endHour) {
-        ctx.addIssue({
-          code: "custom",
-          message: "La hora de fin debe ser mayor que la hora de inicio.",
-          path: ["sessions", index, "beginHour"],
-        });
-      }
-    });
   });
 
 export const RequisiteSchema = z.object({
@@ -74,8 +71,8 @@ export const RequisiteSchema = z.object({
 });
 
 export const SubjectSchema = z.object({
-  code: z.string(),
-  name: z.string(),
+  code: z.string().nonempty("El código no debe estar vacío"),
+  name: z.string().nonempty("El nombre no puede estar vacío"),
   credits: z.int().positive(),
   hours: z.int().positive(),
   semester: z.int().positive(),
@@ -90,10 +87,3 @@ export const PensumSchema = z.object({
   semesters: z.int().positive(),
   subjects: z.array(SubjectSchema),
 });
-
-/** Inferencia de tipos TypeScript */
-export type Session = z.infer<typeof SessionSchema>;
-export type Group = z.infer<typeof GroupSchema>;
-export type Requisite = z.infer<typeof RequisiteSchema>;
-export type Subject = z.infer<typeof SubjectSchema>;
-export type Pensum = z.infer<typeof PensumSchema>;

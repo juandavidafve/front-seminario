@@ -10,8 +10,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Form } from "@/components/ui/form";
 import FormInput from "@/components/ui/form-input";
 import { Switch } from "@/components/ui/switch";
-import type { User } from "@/schemas/User";
 import { getUsers, toggleAdmin } from "@/services/user";
+import type { User } from "@/types/User";
 
 export default function Usuarios() {
   const [users, setUsers] = useState<User[]>([]);

@@ -20,7 +20,8 @@ import FormMultiSelector from "@/components/ui/form-multiselector";
 import FormSelect from "@/components/ui/form-select";
 import { useAppSelector } from "@/hooks/redux";
 import { SubjectError } from "@/redux/errors/SubjectError";
-import { SubjectSchema, type Subject } from "@/schemas/Pensum";
+import { SubjectSchema } from "@/schemas/Pensum";
+import type { Subject } from "@/types/Pensum";
 
 import GroupForm from "./GroupForm";
 
@@ -75,7 +76,7 @@ export function SubjectForm({
         onOpenChange(open);
       }}
     >
-      <AlertDialogContent className="max-h-[calc(100vh-var(--spacing)*8)] overflow-auto">
+      <AlertDialogContent className="max-h-[calc(100vh-var(--spacing)*8)] overflow-auto sm:max-w-xl">
         <AlertDialogHeader>
           <AlertDialogTitle>Materia</AlertDialogTitle>
         </AlertDialogHeader>
@@ -119,18 +120,6 @@ export function SubjectForm({
             />
             <FormInputNumber control={control} name="hours" label="Horas" />
 
-            <FormInputNumber
-              control={control}
-              name="semester"
-              label="Semestre"
-            />
-
-            <FormInputNumber
-              control={control}
-              name="requiredCredits"
-              label="Créditos Requeridos"
-            />
-
             <FormSelect
               control={control}
               items={[
@@ -157,7 +146,21 @@ export function SubjectForm({
               itemValue="value"
             />
 
-            {subjects && (
+            <FormInputNumber
+              control={control}
+              name="semester"
+              label="Semestre"
+            />
+
+            {semester > 1 && (
+              <FormInputNumber
+                control={control}
+                name="requiredCredits"
+                label="Créditos Requeridos"
+              />
+            )}
+
+            {subjects && semester > 1 && (
               <FormMultiSelector
                 control={control}
                 name="requisites"
@@ -175,7 +178,7 @@ export function SubjectForm({
               />
             )}
 
-            <GroupForm control={control} />
+            <GroupForm />
 
             <AlertDialogFooter className="mt-8">
               <AlertDialogCancel>Cancelar</AlertDialogCancel>

@@ -1,28 +1,45 @@
 import "@xyflow/react/dist/style.css";
 import { useEffect } from "react";
-import { useAsync } from "react-async-hook";
 
-import { useAppDispatch } from "@/hooks/redux";
-import { setPensum } from "@/redux/slices/pensumSlice";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { setPensum, setWorkflow } from "@/redux/slices/pensumSlice";
 import { getPensum } from "@/services/pensum";
+import { getActiveWorkflows } from "@/services/workflow";
 
-import PensumGraph from "./components/graph/PensumGraph";
+import PensumManager from "./components/PensumManager";
 
 export default function Pensum() {
   const dispatch = useAppDispatch();
-  const pensumReq = useAsync(getPensum, []);
+  const isAdmin = useAppSelector((state) =>
+    state.auth.user?.roles.includes("ROLE_ADMIN"),
+  );
 
   useEffect(() => {
-    if (pensumReq.result) {
-      dispatch(setPensum(pensumReq.result));
-    }
-  }, [pensumReq, dispatch]);
+    (async () => {
+      const pensum = await getPensum();
+
+      dispatch(setPensum(pensum));
+    })();
+  }, [dispatch]);
+
+  useEffect(() => {
+    (async () => {
+      if (!isAdmin) return;
+
+      const workflows = await getActiveWorkflows();
+      if (!Array.isArray(workflows)) return;
+
+      if (workflows.length > 0) {
+        dispatch(setWorkflow(workflows[0]));
+      }
+    })();
+  }, [dispatch, isAdmin]);
 
   return (
     <>
       <h1 className="mb-8 text-2xl font-bold">Pensum</h1>
 
-      <PensumGraph />
+      <PensumManager />
     </>
   );
 }

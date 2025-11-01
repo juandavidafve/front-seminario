@@ -1,6 +1,6 @@
 import type { ReactFlowProps } from "@xyflow/react";
 
-import type { Pensum, Subject } from "@/schemas/Pensum";
+import type { Pensum, Subject } from "@/types/Pensum";
 
 const NODE_WIDTH = 200;
 const NODE_HEIGHT = 100;

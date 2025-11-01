@@ -1,15 +1,18 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-import type { Pensum, Subject } from "@/schemas/Pensum";
+import type { Pensum, Subject } from "@/types/Pensum";
+import type { Workflow } from "@/types/Workflow";
 
 interface PensumState {
   data: Pensum | null;
   hasChanged: boolean;
+  workflow: Workflow | null;
 }
 
 const initialState: PensumState = {
   data: null,
   hasChanged: false,
+  workflow: null,
 };
 
 export const pensumSlice = createSlice({
@@ -73,10 +76,24 @@ export const pensumSlice = createSlice({
       );
       state.hasChanged = true;
     },
+
+    setWorkflow(state, action: PayloadAction<Workflow>) {
+      state.workflow = action.payload;
+    },
+
+    clearWorkflow(state) {
+      state.workflow = null;
+    },
   },
 });
 
-export const { setPensum, updateSubject, insertSubject, removeSubject } =
-  pensumSlice.actions;
+export const {
+  setPensum,
+  updateSubject,
+  insertSubject,
+  removeSubject,
+  setWorkflow,
+  clearWorkflow,
+} = pensumSlice.actions;
 
 export default pensumSlice.reducer;

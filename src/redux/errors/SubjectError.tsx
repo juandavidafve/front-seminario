@@ -1,6 +1,6 @@
 import type { Path } from "react-hook-form";
 
-import type { Subject } from "@/schemas/Pensum";
+import type { Subject } from "@/types/Pensum";
 
 export class SubjectError extends Error {
   path: Path<Subject>;

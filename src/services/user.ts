@@ -1,5 +1,6 @@
 import { api } from "@/lib/axios";
-import { UserSchema, type UserForm } from "@/schemas/User";
+import { UserSchema } from "@/schemas/User";
+import type { UserForm } from "@/types/User";
 
 const base = "/user";
 
