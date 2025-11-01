@@ -1,5 +1,6 @@
 import { Icon } from "@iconify/react";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +16,7 @@ import { Progress } from "@/components/ui/progress";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { cn } from "@/lib/utils";
 import { clearWorkflow, setWorkflow } from "@/redux/slices/pensumSlice";
-import { getWorkflowByUUID } from "@/services/workflow";
+import { createWorkflow, getWorkflowByUUID } from "@/services/workflow";
 import type { Job, Workflow } from "@/types/Workflow";
 
 interface Props {
@@ -32,6 +33,16 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
     if (workflow?.state === "PROCESSING") {
       interval = setInterval(async () => {
         const res = await getWorkflowByUUID(workflow.uuid);
+        if (res.state === "SUCCESS") {
+          toast.success(
+            "La sincronización con Divisist se completó correctamente.",
+          );
+        }
+        if (res.state === "ERROR") {
+          toast.error(
+            "Ocurrió un error durante la sincronización con Divisist. Intenta nuevamente.",
+          );
+        }
         dispatch(setWorkflow(structuredClone(res)));
       }, 1000);
     } else if (interval) {
@@ -45,8 +56,6 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
       }
     };
   }, [workflow, dispatch]);
-
-  if (!workflow) return;
 
   function parseState(state: Workflow["state"] | Job["state"]) {
     switch (state) {
@@ -71,39 +80,44 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
     onOpenChange(open);
   }
 
+  async function handleRetry() {
+    const data = await createWorkflow();
+    dispatch(setWorkflow(data));
+  }
+
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Workflow {workflow.uuid} -{" "}
+            Workflow {workflow?.uuid} -{" "}
             <span
               className={cn(
-                workflow.state === "PROCESSING" && "text-yellow-500",
-                workflow.state === "SUCCESS" && "text-green-500",
-                workflow.state === "ERROR" && "text-red-500",
+                workflow?.state === "PROCESSING" && "text-yellow-500",
+                workflow?.state === "SUCCESS" && "text-green-500",
+                workflow?.state === "ERROR" && "text-red-500",
               )}
             >
-              {parseState(workflow.state)}
+              {workflow?.state && parseState(workflow.state)}
             </span>
           </DialogTitle>
           <DialogDescription>
-            <span>Inicio: {workflow.start}</span>
-            {workflow.end && <span> | Fin: {workflow.end}</span>}
+            <span>Inicio: {workflow?.start}</span>
+            {workflow?.end && <span> | Fin: {workflow.end}</span>}
           </DialogDescription>
         </DialogHeader>
 
         {/* Barra de progreso */}
         <div className="my-4">
-          <Progress value={workflow.progress} />
+          <Progress value={workflow?.progress} />
           <p className="mt-1 text-sm text-gray-600">
-            {workflow.progress}% completado
+            {workflow?.progress}% completado
           </p>
         </div>
 
         {/* Lista de jobs */}
         <div className="h-48 space-y-2 overflow-y-auto">
-          {workflow.jobs.map((job) => (
+          {workflow?.jobs.map((job) => (
             <div
               key={job.id}
               className="flex items-center justify-between rounded-md border p-2"
@@ -145,7 +159,7 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
             </div>
           ))}
 
-          {workflow.jobs.length === 0 && (
+          {workflow?.jobs.length === 0 && (
             <div className="flex flex-col items-center justify-center py-12 text-gray-500">
               <Icon
                 icon="material-symbols:nest-clock-farsight-analog-outline-rounded"
@@ -157,6 +171,9 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
         </div>
 
         <DialogFooter className="mt-4">
+          {workflow?.state === "ERROR" && (
+            <Button onClick={handleRetry}>Reintentar</Button>
+          )}
           <DialogClose asChild>
             <Button variant="outline">Cerrar</Button>
           </DialogClose>

@@ -1,8 +1,7 @@
 import "@xyflow/react/dist/style.css";
 import { useEffect } from "react";
-import { useAsync } from "react-async-hook";
 
-import { useAppDispatch } from "@/hooks/redux";
+import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { setPensum, setWorkflow } from "@/redux/slices/pensumSlice";
 import { getPensum } from "@/services/pensum";
 import { getActiveWorkflows } from "@/services/workflow";
@@ -11,23 +10,30 @@ import PensumManager from "./components/PensumManager";
 
 export default function Pensum() {
   const dispatch = useAppDispatch();
-  const activeWorkflowsReq = useAsync(getActiveWorkflows, []);
-  const pensumReq = useAsync(getPensum, []);
+  const isAdmin = useAppSelector((state) =>
+    state.auth.user?.roles.includes("ROLE_ADMIN"),
+  );
 
   useEffect(() => {
-    if (pensumReq.result) {
-      dispatch(setPensum(pensumReq.result));
-    }
-  }, [pensumReq.result, dispatch]);
+    (async () => {
+      const pensum = await getPensum();
+
+      dispatch(setPensum(pensum));
+    })();
+  }, [dispatch]);
 
   useEffect(() => {
-    const workflows = activeWorkflowsReq.result;
-    if (!Array.isArray(workflows)) return;
+    (async () => {
+      if (!isAdmin) return;
 
-    if (workflows.length > 0) {
-      dispatch(setWorkflow(workflows[0]));
-    }
-  }, [activeWorkflowsReq.result, dispatch]);
+      const workflows = await getActiveWorkflows();
+      if (!Array.isArray(workflows)) return;
+
+      if (workflows.length > 0) {
+        dispatch(setWorkflow(workflows[0]));
+      }
+    })();
+  }, [dispatch, isAdmin]);
 
   return (
     <>
