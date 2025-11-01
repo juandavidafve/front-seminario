@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { User } from "@/schemas/User";
+import type { User } from "@/types/User";
 
 export interface AuthState {
   user: User | undefined | null;

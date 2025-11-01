@@ -1,11 +1,8 @@
 import { api } from "@/lib/axios";
-import { type Pensum } from "@/schemas/Pensum";
+import type { Pensum } from "@/types/Pensum";
 
 export async function getPensum() {
-  const response = await api.get("/pensum");
-
-  const data: Pensum = response.data;
-
+  const { data } = await api.get<Pensum>("/pensum");
   return data;
 }
 

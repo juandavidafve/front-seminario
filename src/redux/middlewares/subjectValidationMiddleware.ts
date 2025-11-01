@@ -1,7 +1,7 @@
 // src/middlewares/subjectValidationMiddleware.ts
 import type { Middleware } from "@reduxjs/toolkit";
 
-import type { Pensum, Subject } from "@/schemas/Pensum";
+import type { Pensum, Subject } from "@/types/Pensum";
 
 import { SubjectError } from "../errors/SubjectError";
 import { insertSubject, updateSubject } from "../slices/pensumSlice";

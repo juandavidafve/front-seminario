@@ -87,10 +87,3 @@ export const PensumSchema = z.object({
   semesters: z.int().positive(),
   subjects: z.array(SubjectSchema),
 });
-
-/** Inferencia de tipos TypeScript */
-export type Session = z.infer<typeof SessionSchema>;
-export type Group = z.infer<typeof GroupSchema>;
-export type Requisite = z.infer<typeof RequisiteSchema>;
-export type Subject = z.infer<typeof SubjectSchema>;
-export type Pensum = z.infer<typeof PensumSchema>;

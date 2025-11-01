@@ -19,7 +19,7 @@ import {
   SheetDescription,
   SheetClose,
 } from "@/components/ui/sheet";
-import type { Subject } from "@/schemas/Pensum";
+import type { Subject } from "@/types/Pensum";
 
 // ⬅️ importa tu tipo inferido de Zod aquí
 

@@ -11,6 +11,3 @@ export const UserFormSchema = UserSchema.pick({
   email: true,
   name: true,
 });
-
-export type User = z.infer<typeof UserSchema>;
-export type UserForm = z.infer<typeof UserFormSchema>;

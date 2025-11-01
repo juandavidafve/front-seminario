@@ -7,21 +7,26 @@ import {
   insertSubject,
   removeSubject,
   setPensum,
+  setWorkflow,
   updateSubject,
 } from "@/redux/slices/pensumSlice";
-import { type Subject } from "@/schemas/Pensum";
 import { savePensum } from "@/services/pensum";
+import { createWorkflow } from "@/services/workflow";
+import { type Subject } from "@/types/Pensum";
 
-import { PensumGraph } from "./PensumGraph";
+import SubjectView from "./SubjectView";
+import WorkflowView from "./WorkflowView";
 import { SubjectForm } from "./forms/SubjectForm";
-import SubjectView from "./graph/SubjectView";
+import { PensumGraph } from "./graph/PensumGraph";
 
 export default function PensumManager() {
   const dispatch = useAppDispatch();
   const pensum = useAppSelector((state) => state.pensum.data);
+  const workflow = useAppSelector((state) => state.pensum.workflow);
 
   const [showForm, setShowForm] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [showWorkflow, setShowWorkflow] = useState(false);
   const [selectedSubject, setSelectedSubject] = useState<Subject | undefined>();
   const [formAction, setFormAction] = useState<(s: Subject) => void>(
     () => () => {},
@@ -57,6 +62,15 @@ export default function PensumManager() {
     dispatch(removeSubject(subject.code));
   };
 
+  async function handleWorkflow() {
+    if (!workflow) {
+      const data = await createWorkflow();
+      dispatch(setWorkflow(data));
+    }
+
+    setShowWorkflow(true);
+  }
+
   return (
     <>
       <SubjectForm
@@ -70,6 +84,7 @@ export default function PensumManager() {
         onOpenChange={setShowDetails}
         open={showDetails}
       />
+      <WorkflowView open={showWorkflow} onOpenChange={setShowWorkflow} />
       <div className="h-[calc(100vh-var(--spacing)*48)] lg:h-[calc(100vh-var(--spacing)*32)]">
         <PensumGraph
           pensum={pensum}
@@ -78,6 +93,7 @@ export default function PensumManager() {
           onEdit={handleEdit}
           onDelete={handleDelete}
           onSave={handleSave}
+          onWorkflow={handleWorkflow}
         />
       </div>
     </>

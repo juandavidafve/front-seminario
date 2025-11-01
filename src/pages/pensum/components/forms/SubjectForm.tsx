@@ -20,7 +20,8 @@ import FormMultiSelector from "@/components/ui/form-multiselector";
 import FormSelect from "@/components/ui/form-select";
 import { useAppSelector } from "@/hooks/redux";
 import { SubjectError } from "@/redux/errors/SubjectError";
-import { SubjectSchema, type Subject } from "@/schemas/Pensum";
+import { SubjectSchema } from "@/schemas/Pensum";
+import type { Subject } from "@/types/Pensum";
 
 import GroupForm from "./GroupForm";
 

@@ -8,8 +8,9 @@ import { Form } from "@/components/ui/form";
 import FormInput from "@/components/ui/form-input";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { update } from "@/redux/slices/authSlice";
-import { UserFormSchema, type UserForm } from "@/schemas/User";
+import { UserFormSchema } from "@/schemas/User";
 import { setAccountInfo } from "@/services/user";
+import type { UserForm } from "@/types/User";
 
 export default function DatosPersonales() {
   const dispatch = useAppDispatch();

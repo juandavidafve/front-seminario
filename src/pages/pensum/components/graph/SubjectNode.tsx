@@ -12,7 +12,7 @@ import { BaseNode, BaseNodeContent } from "@/components/base-node";
 import { Button } from "@/components/ui/button";
 import { useAppSelector } from "@/hooks/redux";
 import { cn } from "@/lib/utils";
-import type { Subject } from "@/schemas/Pensum";
+import type { Subject } from "@/types/Pensum";
 
 interface Props extends Record<string, unknown> {
   onView: (s: Subject) => void;
@@ -24,6 +24,7 @@ interface Props extends Record<string, unknown> {
 export default function SubjectNode({ data }: NodeProps<Node<Props>>) {
   const { subject, onDelete, onEdit, onView } = data;
   const user = useAppSelector((state) => state.auth.user);
+  const workflow = useAppSelector((state) => state.pensum.workflow);
 
   const isElective = subject.type.includes("ELECTIVE");
 
@@ -49,6 +50,8 @@ export default function SubjectNode({ data }: NodeProps<Node<Props>>) {
 
   const color = useRef(colors[Math.floor(Math.random() * colors.length)]);
 
+  const uiDisabled = workflow?.state === "PROCESSING";
+
   return (
     <>
       <NodeToolbar
@@ -56,15 +59,27 @@ export default function SubjectNode({ data }: NodeProps<Node<Props>>) {
         align="center"
         className="flex gap-1"
       >
-        <Button size="icon" onClick={() => onView(subject)}>
+        <Button
+          size="icon"
+          onClick={() => onView(subject)}
+          disabled={uiDisabled}
+        >
           <Icon icon="mdi:eye-outline"></Icon>
         </Button>
         {user?.roles.includes("ROLE_ADMIN") && (
           <>
-            <Button size="icon" onClick={() => onEdit(subject)}>
+            <Button
+              size="icon"
+              onClick={() => onEdit(subject)}
+              disabled={uiDisabled}
+            >
               <Icon icon="material-symbols:edit-outline-rounded"></Icon>
             </Button>
-            <Button size="icon" onClick={() => onDelete(subject)}>
+            <Button
+              size="icon"
+              onClick={() => onDelete(subject)}
+              disabled={uiDisabled}
+            >
               <Icon icon="material-symbols:delete-outline-rounded"></Icon>
             </Button>
           </>

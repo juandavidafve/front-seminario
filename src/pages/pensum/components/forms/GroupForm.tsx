@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import type { Subject } from "@/schemas/Pensum";
+import type { Subject } from "@/types/Pensum";
 
 import SessionForm from "./SessionForm";
 

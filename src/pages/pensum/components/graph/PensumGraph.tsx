@@ -12,11 +12,11 @@ import {
 import { useCallback, useEffect, useState } from "react";
 
 import { GroupNode } from "@/components/labeled-group-node";
-import type { Pensum, Subject } from "@/schemas/Pensum";
+import type { Pensum, Subject } from "@/types/Pensum";
 
-import parse from "../utils/GraphParser";
+import parse from "../../utils/GraphParser";
 import { PensumToolbar } from "./PensumToolbar";
-import SubjectNode from "./graph/SubjectNode";
+import SubjectNode from "./SubjectNode";
 
 const nodeTypes = {
   labeledGroupNode: GroupNode,
@@ -30,6 +30,7 @@ interface PensumGraphProps {
   onDelete(subject: Subject): void;
   onAdd(): void;
   onSave(): void;
+  onWorkflow(): void;
 }
 
 export function PensumGraph({
@@ -39,6 +40,7 @@ export function PensumGraph({
   onDelete,
   onAdd,
   onSave,
+  onWorkflow,
 }: PensumGraphProps) {
   const [nodes, setNodes] = useState<ReactFlowProps["nodes"]>();
   const [edges, setEdges] = useState<ReactFlowProps["edges"]>();
@@ -74,7 +76,12 @@ export function PensumGraph({
       >
         <Controls />
         <Background />
-        <PensumToolbar nodes={nodes} onAdd={onAdd} onSave={onSave} />
+        <PensumToolbar
+          nodes={nodes}
+          onAdd={onAdd}
+          onSave={onSave}
+          onWorkflow={onWorkflow}
+        />
       </ReactFlow>
     </div>
   );

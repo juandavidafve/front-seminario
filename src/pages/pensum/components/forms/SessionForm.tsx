@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FormLabel, FormMessage } from "@/components/ui/form";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
-import type { Subject } from "@/schemas/Pensum";
+import type { Subject } from "@/types/Pensum";
 
 interface Props {
   groupIndex: number;
