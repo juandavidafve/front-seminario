@@ -2,7 +2,9 @@
 import { useState } from "react";
 import { toast } from "sonner";
 
+import { ConfirmLeaveDialog } from "@/components/ConfirmLeaveDialog";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { useNavigationBlocker } from "@/hooks/useNavigationBlocker";
 import {
   insertSubject,
   removeSubject,
@@ -23,6 +25,7 @@ export default function PensumManager() {
   const dispatch = useAppDispatch();
   const pensum = useAppSelector((state) => state.pensum.data);
   const workflow = useAppSelector((state) => state.pensum.workflow);
+  const hasChanged = useAppSelector((state) => state.pensum.hasChanged);
 
   const [showForm, setShowForm] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
@@ -31,6 +34,12 @@ export default function PensumManager() {
   const [formAction, setFormAction] = useState<(s: Subject) => void>(
     () => () => {},
   );
+
+  const {
+    showDialog: showLeaveDialog,
+    confirmNavigation,
+    cancelNavigation,
+  } = useNavigationBlocker(hasChanged);
 
   async function handleSave() {
     const data = await savePensum(pensum!);
@@ -73,6 +82,11 @@ export default function PensumManager() {
 
   return (
     <>
+      <ConfirmLeaveDialog
+        open={showLeaveDialog}
+        onConfirm={confirmNavigation}
+        onCancel={cancelNavigation}
+      />
       <SubjectForm
         onSubmit={formAction}
         onOpenChange={setShowForm}

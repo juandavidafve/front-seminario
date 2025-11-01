@@ -1,5 +1,11 @@
 import { Icon } from "@iconify/react";
-import { HashRouter, Routes, Route, Navigate } from "react-router";
+import {
+  Route,
+  Navigate,
+  RouterProvider,
+  createHashRouter,
+  createRoutesFromElements,
+} from "react-router";
 
 import { useAppSelector } from "@/hooks/redux";
 import Welcome from "@/pages/Welcome";
@@ -24,9 +30,9 @@ export default function Router() {
       </div>
     );
 
-  return (
-    <HashRouter>
-      <Routes>
+  const router = createHashRouter(
+    createRoutesFromElements(
+      <>
         <Route
           element={user !== null ? <Layout /> : <Navigate to="/auth/login" />}
         >
@@ -44,7 +50,9 @@ export default function Router() {
           path="/auth/login"
           element={user === null ? <Login /> : <Navigate to="/" />}
         />
-      </Routes>
-    </HashRouter>
+      </>,
+    ),
   );
+
+  return <RouterProvider router={router} />;
 }

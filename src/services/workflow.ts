@@ -19,6 +19,7 @@ export async function createWorkflow() {
 
 export async function getWorkflowByUUID(uuid: string) {
   // GET /workflow/uuid
+  console.log(uuid);
 
   if (!workflow) return createWorkflow();
 
