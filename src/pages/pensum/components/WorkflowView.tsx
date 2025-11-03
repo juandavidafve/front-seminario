@@ -15,7 +15,12 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { cn } from "@/lib/utils";
-import { clearWorkflow, setWorkflow } from "@/redux/slices/pensumSlice";
+import {
+  clearWorkflow,
+  setPensum,
+  setWorkflow,
+} from "@/redux/slices/pensumSlice";
+import { getPensum } from "@/services/pensum";
 import { createWorkflow, getWorkflowByUUID } from "@/services/workflow";
 import type { Job, Workflow } from "@/types/Workflow";
 
@@ -37,6 +42,9 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
           toast.success(
             "La sincronización con Divisist se completó correctamente.",
           );
+
+          const pensum = await getPensum();
+          dispatch(setPensum(pensum));
         }
         if (res.state === "ERROR") {
           toast.error(

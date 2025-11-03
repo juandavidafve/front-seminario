@@ -42,7 +42,9 @@ export default function PensumManager() {
   } = useNavigationBlocker(hasChanged);
 
   async function handleSave() {
-    const data = await savePensum(pensum!);
+    if (!pensum) return;
+
+    const data = await savePensum(pensum);
     dispatch(setPensum(data));
     toast.success("Pensum actualizado correctamente");
   }
@@ -101,7 +103,6 @@ export default function PensumManager() {
       <WorkflowView open={showWorkflow} onOpenChange={setShowWorkflow} />
       <div className="h-[calc(100vh-var(--spacing)*48)] lg:h-[calc(100vh-var(--spacing)*32)]">
         <PensumGraph
-          pensum={pensum}
           onAdd={handleAdd}
           onView={handleView}
           onEdit={handleEdit}
