@@ -12,7 +12,8 @@ import {
 import { useCallback, useEffect, useState } from "react";
 
 import { GroupNode } from "@/components/labeled-group-node";
-import type { Pensum, Subject } from "@/types/Pensum";
+import { useAppSelector } from "@/hooks/redux";
+import type { Subject } from "@/types/Pensum";
 
 import parse from "../../utils/GraphParser";
 import { PensumToolbar } from "./PensumToolbar";
@@ -24,7 +25,6 @@ const nodeTypes = {
 };
 
 interface PensumGraphProps {
-  pensum: Pensum | null;
   onView(subject: Subject): void;
   onEdit(subject: Subject): void;
   onDelete(subject: Subject): void;
@@ -34,7 +34,6 @@ interface PensumGraphProps {
 }
 
 export function PensumGraph({
-  pensum,
   onView,
   onEdit,
   onDelete,
@@ -42,6 +41,7 @@ export function PensumGraph({
   onSave,
   onWorkflow,
 }: PensumGraphProps) {
+  const pensum = useAppSelector((state) => state.pensum.data);
   const [nodes, setNodes] = useState<ReactFlowProps["nodes"]>();
   const [edges, setEdges] = useState<ReactFlowProps["edges"]>();
 
@@ -52,9 +52,10 @@ export function PensumGraph({
       onEdit,
       onDelete,
     });
+
     setNodes(parsed.nodes);
     setEdges(parsed.edges);
-  }, [pensum, onView, onEdit, onDelete]);
+  }, [pensum]);
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     setNodes((nds) => nds && applyNodeChanges(changes, nds));

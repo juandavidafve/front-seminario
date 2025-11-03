@@ -59,11 +59,7 @@ export default function SubjectNode({ data }: NodeProps<Node<Props>>) {
         align="center"
         className="flex gap-1"
       >
-        <Button
-          size="icon"
-          onClick={() => onView(subject)}
-          disabled={uiDisabled}
-        >
+        <Button size="icon" onClick={() => onView(subject)}>
           <Icon icon="mdi:eye-outline"></Icon>
         </Button>
         {user?.roles.includes("ROLE_ADMIN") && (
