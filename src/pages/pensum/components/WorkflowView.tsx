@@ -90,7 +90,7 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
       <DialogContent>
         <DialogHeader>
           <DialogTitle>
-            Workflow {workflow?.uuid} -{" "}
+            Workflow {workflow?.uuid.split("-")[0]} -{" "}
             <span
               className={cn(
                 workflow?.state === "PROCESSING" && "text-yellow-500",
@@ -102,8 +102,13 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
             </span>
           </DialogTitle>
           <DialogDescription>
-            <span>Inicio: {workflow?.start}</span>
-            {workflow?.end && <span> | Fin: {workflow.end}</span>}
+            {workflow?.start && (
+              <span>Inicio: {new Date(workflow.start).toLocaleString()}</span>
+            )}
+
+            {workflow?.end && (
+              <span> | Fin: {new Date(workflow.end).toLocaleString()}</span>
+            )}
           </DialogDescription>
         </DialogHeader>
 
@@ -111,7 +116,7 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
         <div className="my-4">
           <Progress value={workflow?.progress} />
           <p className="mt-1 text-sm text-gray-600">
-            {workflow?.progress}% completado
+            {workflow?.progress.toFixed(0)}% completado
           </p>
         </div>
 
