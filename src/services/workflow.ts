@@ -18,3 +18,9 @@ export async function getActiveWorkflows() {
 
   return response.data;
 }
+
+export async function stopWorkflow(uuid: string) {
+  const response = await api.put<string>(`/api/workflow/workflow/${uuid}/end`);
+
+  return response.data;
+}
