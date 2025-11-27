@@ -41,6 +41,11 @@ export default function Sidebar() {
       icon: "material-symbols:id-card-outline-rounded",
       url: "/datos-personales",
     },
+    {
+      label: "Horarios",
+      icon: "material-symbols:calendar-clock-outline-rounded",
+      url: "/horarios",
+    },
   ];
 
   const currentNavItem = navItems.find((item) => item.url === pathname);
