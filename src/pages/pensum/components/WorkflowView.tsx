@@ -21,7 +21,11 @@ import {
   setWorkflow,
 } from "@/redux/slices/pensumSlice";
 import { getPensum } from "@/services/pensum";
-import { createWorkflow, getWorkflowByUUID } from "@/services/workflow";
+import {
+  createWorkflow,
+  getWorkflowByUUID,
+  stopWorkflow,
+} from "@/services/workflow";
 import type { Job, Workflow } from "@/types/Workflow";
 
 interface Props {
@@ -91,6 +95,12 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
   async function handleRetry() {
     const data = await createWorkflow();
     dispatch(setWorkflow(data));
+  }
+
+  async function handleStop() {
+    if (workflow?.state === "PROCESSING") {
+      const data = await stopWorkflow(workflow!.uuid);
+    }
   }
 
   return (
@@ -184,9 +194,15 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
         </div>
 
         <DialogFooter className="mt-4">
-          {workflow?.state === "ERROR" && (
+          {(workflow?.state === "ERROR" || workflow?.state === "STOPPED") && (
             <Button onClick={handleRetry}>Reintentar</Button>
           )}
+          <Button
+            onClick={handleStop}
+            disabled={workflow?.state !== "PROCESSING"}
+          >
+            Detener
+          </Button>
           <DialogClose asChild>
             <Button variant="outline">Cerrar</Button>
           </DialogClose>
