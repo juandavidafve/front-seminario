@@ -14,6 +14,11 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import {
   createSchedule,
   deleteSchedule,
   duplicateSchedule,
@@ -73,14 +78,19 @@ export default function Horarios() {
       </div>
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         {filteredSchedules?.map((schedule) => (
-          <Card className="gap-4">
+          <Card className="gap-4" key={schedule.id}>
             <CardHeader>
               <CardTitle>{schedule.title}</CardTitle>
               <CardDescription>{schedule.credits} créditos</CardDescription>
             </CardHeader>
             <CardContent className="space-x-2">
-              {schedule.subjectGroups.map((group) => (
-                <Badge>{group.code}</Badge>
+              {schedule.subjects.map((subject) => (
+                <Tooltip>
+                  <TooltipTrigger>
+                    <Badge key={subject.group.code}>{subject.group.code}</Badge>
+                  </TooltipTrigger>
+                  <TooltipContent>{subject.group.name}</TooltipContent>
+                </Tooltip>
               ))}
             </CardContent>
             <CardFooter className="justify-between">
