@@ -99,7 +99,7 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
 
   async function handleStop() {
     if (workflow?.state === "PROCESSING") {
-      const data = await stopWorkflow(workflow!.uuid);
+      await stopWorkflow(workflow!.uuid);
     }
   }
 

@@ -10,7 +10,7 @@ export interface Schedule {
   }[];
 }
 
-interface ScheduleGroup {
+export interface ScheduleGroup {
   name: string;
   teacher: string;
   code: string;

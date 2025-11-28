@@ -1,6 +1,7 @@
 import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { useAsync } from "react-async-hook";
+import { Link } from "react-router";
 
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -112,7 +113,9 @@ export default function Horarios() {
                 </Button>
               </div>
 
-              <Button>Ver detalle</Button>
+              <Link to={`${schedule.id}`}>
+                <Button>Ver detalle</Button>
+              </Link>
             </CardFooter>
           </Card>
         ))}

@@ -2,8 +2,7 @@ import "@xyflow/react/dist/style.css";
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
-import { setPensum, setWorkflow } from "@/redux/slices/pensumSlice";
-import { getPensum } from "@/services/pensum";
+import { setWorkflow } from "@/redux/slices/pensumSlice";
 import { getActiveWorkflows } from "@/services/workflow";
 
 import PensumManager from "./components/PensumManager";
@@ -13,14 +12,6 @@ export default function Pensum() {
   const isAdmin = useAppSelector((state) =>
     state.auth.user?.roles.includes("ROLE_ADMIN"),
   );
-
-  useEffect(() => {
-    (async () => {
-      const pensum = await getPensum();
-
-      dispatch(setPensum(pensum));
-    })();
-  }, [dispatch]);
 
   useEffect(() => {
     (async () => {
