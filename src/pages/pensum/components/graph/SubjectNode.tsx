@@ -65,7 +65,7 @@ export default function SubjectNode({ data }: NodeProps<Node<Props>>) {
     }
 
     return "bg-red-500";
-  }, [viewMode]);
+  }, [subject.canEnroll, subject.isCompleted, subject.isCritical, viewMode]);
 
   const uiDisabled = workflow?.state === "PROCESSING";
 

@@ -6,6 +6,7 @@ import { setWorkflow } from "@/redux/slices/pensumSlice";
 import { getActiveWorkflows } from "@/services/workflow";
 
 import PensumManager from "./components/PensumManager";
+import SubjectEnrollment from "./components/SubjectEnrollment";
 
 export default function Pensum() {
   const dispatch = useAppDispatch();
@@ -31,6 +32,7 @@ export default function Pensum() {
       <h1 className="mb-8 text-2xl font-bold">Pensum</h1>
 
       <PensumManager />
+      <SubjectEnrollment />
     </>
   );
 }

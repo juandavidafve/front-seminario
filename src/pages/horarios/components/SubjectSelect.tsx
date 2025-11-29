@@ -26,7 +26,7 @@ export default function SubjectSelect({ onSelect }: Props) {
         <Label htmlFor="subjectSearch">Nombre o Código de Materia</Label>
         <Combobox
           id="subjectSearch"
-          items={subjects || []}
+          items={subjects?.filter((s) => s.canEnroll) || []}
           itemValue={(item) => item.code}
           itemLabel={(item) => `${item.code} - ${item.name}`}
           value={subject}
