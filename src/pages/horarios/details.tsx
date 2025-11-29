@@ -12,6 +12,7 @@ import {
 import type { Group, Subject } from "@/types/Pensum";
 import type { Schedule, ScheduleGroup } from "@/types/Schedule";
 
+import AIChat from "./components/AIChat";
 import NameInput from "./components/NameInput";
 import ScheduleViewer from "./components/ScheduleViewer";
 import SubjectCard from "./components/SubjectCard";
@@ -100,6 +101,7 @@ export default function ScheduleDetails() {
         onSubjectAdd={handleSubjectAdd}
       />
       <ScheduleViewer schedule={schedule} />
+      <AIChat />
     </>
   );
 }
