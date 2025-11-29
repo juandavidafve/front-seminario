@@ -1,6 +1,7 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 
+import { cn } from "@/lib/utils";
 import {
   addSubject,
   changeGroup,
@@ -28,6 +29,10 @@ export default function ScheduleDetails() {
       setSchedule(await getScheduleById(id));
     })();
   }, [id]);
+
+  const messages = useMemo(() => {
+    return schedule?.subjects.flatMap((subject) => subject.messages);
+  }, [schedule]);
 
   async function handleTitleUpdate(title: string) {
     const updatedSchedule = await updateTitle(id, title);
@@ -62,6 +67,31 @@ export default function ScheduleDetails() {
       <NameInput schedule={schedule} onChange={handleTitleUpdate} />
 
       <h2 className="mt-12 mb-4 text-xl font-bold">Materias</h2>
+
+      {messages?.map((msg) => (
+        <p
+          className={cn(
+            "mb-4 rounded-lg border p-2",
+            msg.type === "INFO" && "border-blue-300 bg-blue-100",
+            msg.type === "WARNING" && "border-yellow-300 bg-yellow-100",
+            msg.type === "ERROR" && "border-red-300 bg-red-100",
+          )}
+        >
+          <span
+            className={cn(
+              "font-bold",
+              msg.type === "INFO" && "text-blue-800",
+              msg.type === "WARNING" && "text-yellow-800",
+              msg.type === "ERROR" && "text-red-800",
+            )}
+          >
+            {msg.type === "INFO" && "Info:"}
+            {msg.type === "WARNING" && "Advertencia:"}
+            {msg.type === "ERROR" && "Error:"}{" "}
+          </span>
+          {msg.message}
+        </p>
+      ))}
 
       <SubjectCard
         schedule={schedule}
