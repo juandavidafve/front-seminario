@@ -53,9 +53,15 @@ export default function SubjectCard({
           )}
         </div>
       </CardContent>
-      <CardFooter>
-        <span className="mr-2 font-bold">Total:</span>
-        <span>{schedule.credits} Créditos</span>
+      <CardFooter className="block">
+        <p>
+          <span className="mr-2 font-bold">Total:</span>
+          {schedule.credits} Créditos - {schedule.credits * 48} horas de trabajo
+        </p>
+        <p>
+          <span className="mr-2 font-bold">Semanal:</span>
+          <span>{(schedule.credits * 48) / 16} horas de trabajo</span>
+        </p>
       </CardFooter>
     </Card>
   );
