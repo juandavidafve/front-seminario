@@ -30,7 +30,7 @@ export default function GroupSelect({ group, onSelect }: Props) {
   return (
     <Select onValueChange={handleSelect}>
       <SelectTrigger className="!h-auto w-full">
-        <div className="text-left">
+        <div className="text-left text-wrap">
           <p className="font-bold text-foreground">
             {group.name} - {group.credits} Créditos
           </p>

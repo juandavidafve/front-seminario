@@ -79,7 +79,7 @@ export default function Horarios() {
       </div>
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         {filteredSchedules?.map((schedule) => (
-          <Card className="gap-4" key={schedule.id}>
+          <Card className="justify-between gap-4" key={schedule.id}>
             <CardHeader>
               <CardTitle>{schedule.title}</CardTitle>
               <CardDescription>{schedule.credits} créditos</CardDescription>

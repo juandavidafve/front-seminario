@@ -1,9 +1,6 @@
-import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import {
   addSubject,
   changeGroup,
@@ -14,9 +11,9 @@ import {
 import type { Group, Subject } from "@/types/Pensum";
 import type { Schedule, ScheduleGroup } from "@/types/Schedule";
 
-import GroupSelect from "./components/GroupSelect";
 import NameInput from "./components/NameInput";
-import SubjectSelect from "./components/SubjectSelect";
+import ScheduleViewer from "./components/ScheduleViewer";
+import SubjectCard from "./components/SubjectCard";
 
 export default function ScheduleDetails() {
   const params = useParams();
@@ -66,42 +63,13 @@ export default function ScheduleDetails() {
 
       <h2 className="mt-12 mb-4 text-xl font-bold">Materias</h2>
 
-      <Card>
-        <CardContent className="space-y-4">
-          <SubjectSelect onSelect={handleSubjectAdd} />
-
-          <div className="space-y-2">
-            {schedule?.subjects.map((subject) => (
-              <div className="flex items-center gap-2">
-                <GroupSelect
-                  key={subject.group.code}
-                  group={subject.group}
-                  onSelect={(group) => handleGroupChange(subject.group, group)}
-                />
-                <Button
-                  variant={"secondary"}
-                  size={"icon"}
-                  onClick={() => handleGroupDelete(subject.group)}
-                >
-                  <Icon
-                    icon="material-symbols:delete-outline-rounded"
-                    className="size-6"
-                  />
-                </Button>
-              </div>
-            ))}
-            {schedule?.subjects.length === 0 && (
-              <p className="text-center text-muted-foreground">
-                No hay materias seleccionadas
-              </p>
-            )}
-          </div>
-        </CardContent>
-        <CardFooter>
-          <span className="mr-2 font-bold">Total:</span>
-          <span>{schedule.credits} Créditos</span>
-        </CardFooter>
-      </Card>
+      <SubjectCard
+        schedule={schedule}
+        onGroupChange={handleGroupChange}
+        onGroupDelete={handleGroupDelete}
+        onSubjectAdd={handleSubjectAdd}
+      />
+      <ScheduleViewer schedule={schedule} />
     </>
   );
 }
