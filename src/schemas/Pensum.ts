@@ -80,6 +80,9 @@ export const SubjectSchema = z.object({
   type: SubjectTypeEnum,
   groups: z.array(GroupSchema),
   requisites: z.array(RequisiteSchema),
+  isCritical: z.boolean(),
+  isCompleted: z.boolean(),
+  canEnroll: z.boolean(),
 });
 
 export const PensumSchema = z.object({

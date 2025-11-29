@@ -53,6 +53,9 @@ export function SubjectForm({
         type: "MANDATORY",
         groups: [],
         requisites: [],
+        canEnroll: true,
+        isCompleted: false,
+        isCritical: false,
       },
     [defaultValues],
   );

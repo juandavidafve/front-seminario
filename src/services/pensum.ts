@@ -3,6 +3,14 @@ import type { Pensum } from "@/types/Pensum";
 
 export async function getPensum() {
   const { data } = await api.get<Pensum>("/pensum");
+
+  data.subjects = data.subjects.map((subject) => ({
+    ...subject,
+    isCritical: Math.random() <= 0.5,
+    isCompleted: Math.random() <= 0.5,
+    canEnroll: Math.random() <= 0.5,
+  }));
+
   return data;
 }
 
