@@ -70,23 +70,25 @@ export default function AIChat() {
           </CardHeader>
           <CardContent>
             <ScrollArea className="h-50 px-3">
-              {messages.map((msg, i) => (
-                <div key={i} className="flex">
-                  <div
-                    className={cn(
-                      "max-w-[75%] rounded-lg p-2 text-sm",
-                      msg.sender === "user" &&
-                        "ml-auto bg-secondary text-secondary-foreground",
-                      msg.sender === "ai" &&
-                        "bg-primary text-primary-foreground",
-                    )}
-                  >
-                    {msg.content.split("\n").map((line) => (
-                      <p className="text-sm">{line}</p>
-                    ))}
+              <div className="space-y-3">
+                {messages.map((msg, i) => (
+                  <div key={i} className="flex">
+                    <div
+                      className={cn(
+                        "max-w-[75%] rounded-lg p-2 text-sm",
+                        msg.sender === "user" &&
+                          "ml-auto bg-secondary text-secondary-foreground",
+                        msg.sender === "ai" &&
+                          "bg-primary text-primary-foreground",
+                      )}
+                    >
+                      {msg.content.split("\n").map((line) => (
+                        <p className="text-sm wrap-anywhere">{line}</p>
+                      ))}
+                    </div>
                   </div>
-                </div>
-              ))}
+                ))}
+              </div>
             </ScrollArea>
           </CardContent>
           <CardFooter className="items-start gap-2">
