@@ -40,6 +40,10 @@ export default function ScheduleDetails() {
     setSchedule(updatedSchedule);
   }
 
+  async function updateSchedule() {
+    setSchedule(await getScheduleById(id));
+  }
+
   async function handleSubjectAdd(subject: Subject) {
     const updatedSchedule = await addSubject(id, subject.code);
     setSchedule(updatedSchedule);
@@ -101,7 +105,7 @@ export default function ScheduleDetails() {
         onSubjectAdd={handleSubjectAdd}
       />
       <ScheduleViewer schedule={schedule} />
-      <AIChat />
+      <AIChat id={id} updateSchedule={updateSchedule} />
     </>
   );
 }
