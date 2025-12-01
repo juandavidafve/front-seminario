@@ -26,10 +26,9 @@ export default function Sidebar() {
 
   const navItems: NavItem[] = [
     {
-      label: "Usuarios",
-      icon: "material-symbols:supervised-user-circle-outline",
-      url: "/usuarios",
-      show: user?.roles.includes("ROLE_ADMIN"),
+      label: "Horarios",
+      icon: "material-symbols:calendar-clock-outline-rounded",
+      url: "/horarios",
     },
     {
       label: "Pensum",
@@ -37,14 +36,15 @@ export default function Sidebar() {
       url: "/pensum",
     },
     {
+      label: "Usuarios",
+      icon: "material-symbols:supervised-user-circle-outline",
+      url: "/usuarios",
+      show: user?.roles.includes("ROLE_ADMIN"),
+    },
+    {
       label: "Datos Personales",
       icon: "material-symbols:id-card-outline-rounded",
       url: "/datos-personales",
-    },
-    {
-      label: "Horarios",
-      icon: "material-symbols:calendar-clock-outline-rounded",
-      url: "/horarios",
     },
   ];
 

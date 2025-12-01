@@ -2,6 +2,7 @@ import "@xyflow/react/dist/style.css";
 import { useEffect } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
+import { hasCompletedSubjectsSelector } from "@/redux/selectors/pensumSelectors";
 import { setWorkflow } from "@/redux/slices/pensumSlice";
 import { getActiveWorkflows } from "@/services/workflow";
 
@@ -10,6 +11,7 @@ import SubjectEnrollment from "./components/SubjectEnrollment";
 
 export default function Pensum() {
   const dispatch = useAppDispatch();
+  const hasCompletedSubjects = useAppSelector(hasCompletedSubjectsSelector);
   const isAdmin = useAppSelector((state) =>
     state.auth.user?.roles.includes("ROLE_ADMIN"),
   );
@@ -31,7 +33,8 @@ export default function Pensum() {
     <>
       <h1 className="mb-8 text-2xl font-bold">Pensum</h1>
 
-      <PensumManager />
+      {hasCompletedSubjects && <PensumManager />}
+
       <SubjectEnrollment />
     </>
   );
