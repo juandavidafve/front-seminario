@@ -12,19 +12,19 @@ export default function Welcome() {
 
   const items = [
     {
+      icon: "material-symbols:calendar-clock-outline-rounded",
+      title: "Horarios",
+      description: "Horarios adaptados a tus necesitades.",
+      actionUrl: "/horarios",
+      actionName: "Crear",
+    },
+    {
       icon: "material-symbols:school-outline-rounded",
       title: "Pensum",
       description:
         "Consulta el plan de estudios y explora las materias disponibles.",
       actionUrl: "/pensum",
       actionName: "Ver",
-    },
-    {
-      icon: "material-symbols:calendar-clock-outline-rounded",
-      title: "Horarios",
-      description: "Horarios adaptados a tus necesitades.",
-      actionUrl: "/horarios",
-      actionName: "Crear",
     },
     {
       icon: "material-symbols:group-outline-rounded",
@@ -54,7 +54,10 @@ export default function Welcome() {
         {items.map(
           (item) =>
             item.show !== false && (
-              <Card className="gap-2 transition-shadow hover:shadow-lg">
+              <Card
+                className="gap-2 transition-shadow hover:shadow-lg"
+                key={item.actionUrl}
+              >
                 <CardHeader className="flex flex-row items-center gap-2">
                   <Icon icon={item.icon} className="size-8 text-primary" />
                   <CardTitle>{item.title}</CardTitle>

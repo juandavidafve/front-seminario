@@ -19,6 +19,8 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { useAppSelector } from "@/hooks/redux";
+import { hasCompletedSubjectsSelector } from "@/redux/selectors/pensumSelectors";
 import {
   createSchedule,
   deleteSchedule,
@@ -33,6 +35,7 @@ export default function Horarios() {
     loading: schedulesLoading,
     execute: refreshSchedules,
   } = useAsync(getSchedules, []);
+  const hasCompletedSubjects = useAppSelector(hasCompletedSubjectsSelector);
   const [filteredSchedules, setFilteredSchedules] = useState<Schedule[]>([]);
 
   useEffect(() => {
@@ -77,6 +80,16 @@ export default function Horarios() {
         />
         <Button onClick={handleCreate}>Crear</Button>
       </div>
+      {!hasCompletedSubjects && (
+        <p className="my-4 rounded-lg border border-yellow-300 bg-yellow-100 p-2">
+          <span className="font-bold text-yellow-800">Advertencia: </span>
+          No has marcado ninguna materia como cursada. Para hacerlo, dirígete al{" "}
+          <span className="text-yellow-800 underline">
+            <Link to="/pensum">Pensum</Link>
+          </span>
+          .
+        </p>
+      )}
       <div className="mt-8 grid gap-6 md:grid-cols-2">
         {filteredSchedules?.map((schedule) => (
           <Card className="justify-between gap-4" key={schedule.id}>
