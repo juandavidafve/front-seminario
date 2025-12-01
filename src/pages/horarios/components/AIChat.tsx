@@ -197,23 +197,18 @@ export default function AIChat({ id, updateSchedule }: Props) {
                           "bg-primary text-primary-foreground",
                       )}
                     >
-                      {/* Mostrar estado si está en streaming */}
-                      {msg.status && (
-                        <p className="mb-1 text-xs italic opacity-70">
-                          {msg.status}
-                        </p>
-                      )}
-
                       {msg.content && (
                         <MarkdownContent>{msg.content}</MarkdownContent>
                       )}
 
                       {/* Indicator de carga */}
                       {msg.isStreaming && !msg.content && (
-                        <div className="flex items-center gap-1">
-                          <div className="animate-pulse">●</div>
-                          <div className="animate-pulse delay-75">●</div>
-                          <div className="animate-pulse delay-150">●</div>
+                        <div className="flex items-center gap-2">
+                          <Icon
+                            icon="svg-spinners:270-ring"
+                            className="text-primary-foreground"
+                          />
+                          Pensando...
                         </div>
                       )}
                     </div>
