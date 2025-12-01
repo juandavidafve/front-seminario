@@ -11,13 +11,17 @@ import { useAppSelector } from "@/hooks/redux";
 import Welcome from "@/pages/Welcome";
 import Login from "@/pages/auth/Login";
 import DatosPersonales from "@/pages/datos-personales";
+import Horarios from "@/pages/horarios";
+import ScheduleDetails from "@/pages/horarios/details";
 import Pensum from "@/pages/pensum";
 import Usuarios from "@/pages/usuarios";
 
 import Layout from "./Layout";
+import { usePensum } from "./hooks/usePensum";
 import "./index.css";
 
 export default function Router() {
+  usePensum();
   const user = useAppSelector((state) => state.auth.user);
 
   if (user === undefined)
@@ -40,10 +44,10 @@ export default function Router() {
           <Route path="datos-personales" element={<DatosPersonales />} />
           <Route path="pensum" element={<Pensum />} />
           {user?.roles.includes("ROLE_ADMIN") && (
-            <>
-              <Route path="usuarios" element={<Usuarios />} />
-            </>
+            <Route path="usuarios" element={<Usuarios />} />
           )}
+          <Route path="horarios" element={<Horarios />} />
+          <Route path="horarios/:id" element={<ScheduleDetails />} />
         </Route>
 
         <Route

@@ -19,6 +19,7 @@ import {
   SheetDescription,
   SheetClose,
 } from "@/components/ui/sheet";
+import { dayName, formatHour } from "@/lib/utils";
 import type { Subject } from "@/types/Pensum";
 
 // ⬅️ importa tu tipo inferido de Zod aquí
@@ -193,16 +194,4 @@ export default function SubjectView({ open, onOpenChange, subject }: Props) {
       </SheetContent>
     </Sheet>
   );
-}
-
-/* --- Helpers --- */
-
-function formatHour(index: number) {
-  const hour = 6 + index;
-  return `${hour.toString().padStart(2, "0")}:00`;
-}
-
-function dayName(index: number) {
-  const days = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-  return days[index] ?? "Desconocido";
 }

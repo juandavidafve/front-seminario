@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { FormLabel, FormMessage } from "@/components/ui/form";
 import FormInput from "@/components/ui/form-input";
 import FormSelect from "@/components/ui/form-select";
+import { formatHour } from "@/lib/utils";
 import type { Subject } from "@/types/Pensum";
 
 interface Props {
@@ -29,11 +30,8 @@ export default function SessionForm({ groupIndex }: Props) {
   const hourList = Array(17)
     .fill(0)
     .map((_, i) => {
-      const h = i + 6;
-      const hh = h > 9 ? h : `0${h}`; // Add leading zero
-
       return {
-        label: `${hh}:00`,
+        label: formatHour(i),
         value: i,
       };
     });

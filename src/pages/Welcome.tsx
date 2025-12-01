@@ -20,6 +20,13 @@ export default function Welcome() {
       actionName: "Ver",
     },
     {
+      icon: "material-symbols:calendar-clock-outline-rounded",
+      title: "Horarios",
+      description: "Horarios adaptados a tus necesitades.",
+      actionUrl: "/horarios",
+      actionName: "Crear",
+    },
+    {
       icon: "material-symbols:group-outline-rounded",
       title: "Usuarios",
       description: "Administra usuarios y controla sus permisos.",

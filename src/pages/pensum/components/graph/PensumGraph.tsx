@@ -17,6 +17,7 @@ import type { Subject } from "@/types/Pensum";
 
 import parse from "../../utils/GraphParser";
 import { PensumToolbar } from "./PensumToolbar";
+import SettingsPanel from "./SettingsPanel";
 import SubjectNode from "./SubjectNode";
 
 const nodeTypes = {
@@ -33,6 +34,8 @@ interface PensumGraphProps {
   onWorkflow(): void;
 }
 
+export type ViewType = "DEFAULT" | "ENROLL" | "CRITICAL_ROUTE";
+
 export function PensumGraph({
   onView,
   onEdit,
@@ -44,6 +47,7 @@ export function PensumGraph({
   const pensum = useAppSelector((state) => state.pensum.data);
   const [nodes, setNodes] = useState<ReactFlowProps["nodes"]>();
   const [edges, setEdges] = useState<ReactFlowProps["edges"]>();
+  const [viewMode, setViewMode] = useState<ViewType>("DEFAULT");
 
   useEffect(() => {
     if (!pensum) return;
@@ -51,11 +55,12 @@ export function PensumGraph({
       onView,
       onEdit,
       onDelete,
+      viewMode,
     });
 
     setNodes(parsed.nodes);
     setEdges(parsed.edges);
-  }, [pensum]);
+  }, [onDelete, onEdit, onView, pensum, viewMode]);
 
   const onNodesChange = useCallback((changes: NodeChange[]) => {
     setNodes((nds) => nds && applyNodeChanges(changes, nds));
@@ -83,6 +88,7 @@ export function PensumGraph({
           onSave={onSave}
           onWorkflow={onWorkflow}
         />
+        <SettingsPanel value={viewMode} onValueChange={setViewMode} />
       </ReactFlow>
     </div>
   );
