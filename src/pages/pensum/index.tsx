@@ -33,13 +33,13 @@ export default function Pensum() {
     <>
       <h1 className="mb-8 text-2xl font-bold">Pensum</h1>
 
-      <div className="flex min-h-0 flex-col gap-6 md:h-[calc(100vh-8rem)] md:flex-row">
+      <div className="flex min-h-0 flex-col gap-6 lg:h-[calc(100vh-8rem)] lg:flex-row">
         {hasCompletedSubjects && (
-          <div className="min-h-0 md:w-3/4">
+          <div className="min-h-0 lg:w-3/4">
             <PensumManager />
           </div>
         )}
-        <div className="min-h-0 md:w-1/4">
+        <div className="min-h-0 lg:w-1/4">
           <SubjectEnrollment />
         </div>
       </div>
