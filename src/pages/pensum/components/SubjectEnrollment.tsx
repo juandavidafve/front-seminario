@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import {
   Accordion,
@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Command, CommandInput } from "@/components/ui/command";
 import { useAppSelector } from "@/hooks/redux";
 import type { Subject } from "@/types/Pensum";
 
@@ -13,24 +14,59 @@ import SubjectEnrollmentCheckbox from "./SubjectEnrollmentCheckbox";
 
 export default function SubjectEnrollment() {
   const pensum = useAppSelector((state) => state.pensum.data);
+  const [subjectValue, setSubjectValue] = useState<string>("");
 
-  const subjectsBySemester = useMemo(() => {
+  const filteredBySemester = useMemo(() => {
     if (!pensum) return [];
-
-    const arr: Subject[][] = Array.from(
-      { length: pensum?.semesters },
+    const base: Subject[][] = Array.from(
+      { length: pensum.semesters },
       () => [],
     );
-
     for (const subject of pensum.subjects) {
-      arr[subject.semester - 1].push(subject);
+      base[subject.semester - 1].push(subject);
     }
+    const reversed = base.reverse();
 
-    return arr.reverse();
-  }, [pensum]);
+    const q = subjectValue.trim().toLowerCase();
+
+    if (!q) return reversed;
+
+    return reversed
+      .map((subjects) =>
+        subjects.filter((s) => {
+          const key = `${s.code} - ${s.name}`.toLowerCase();
+          return !q || key.includes(q);
+        }),
+      )
+      .filter((subjects) => subjects.length > 0);
+  }, [pensum, subjectValue]);
+
+  const allAccordionValues = useMemo(
+    () => filteredBySemester.filter((e) => e.length).map((_, i) => String(i)),
+    [filteredBySemester],
+  );
+
+  const onChangeValue = (value: string) => {
+    setSubjectValue(value);
+  };
+
+  const results = (
+    <>
+      {filteredBySemester.map((subjects, i) => (
+        <AccordionItem key={i} value={String(i)}>
+          <AccordionTrigger>Semestre {subjects[0]?.semester}</AccordionTrigger>
+          <AccordionContent className="space-y-4">
+            {subjects.map((subject) => (
+              <SubjectEnrollmentCheckbox subject={subject} key={subject.code} />
+            ))}
+          </AccordionContent>
+        </AccordionItem>
+      ))}
+    </>
+  );
 
   return (
-    <div>
+    <div className="flex h-full min-h-0 flex-col">
       <h2 className="mt-8 mb-4 text-xl font-bold">Materias vistas</h2>
       <p className="rounded-lg border border-blue-300 bg-blue-100 p-2">
         <span className="font-bold">Tip:</span> Empieza por marcar las materias
@@ -38,23 +74,25 @@ export default function SubjectEnrollment() {
         automáticamente.
       </p>
 
-      <Accordion type="single" collapsible>
-        {subjectsBySemester.map((subjects, i) => (
-          <AccordionItem key={i} value={String(i)}>
-            <AccordionTrigger>
-              Semestre {subjects[0]?.semester}
-            </AccordionTrigger>
-            <AccordionContent className="space-y-4">
-              {subjects.map((subject) => (
-                <SubjectEnrollmentCheckbox
-                  subject={subject}
-                  key={subject.code}
-                />
-              ))}
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
+      <Command className="mt-2 h-auto">
+        <CommandInput
+          placeholder="Buscar..."
+          value={subjectValue}
+          onValueChange={onChangeValue}
+        />
+      </Command>
+
+      <div className="mt-4 flex-1 overflow-auto">
+        {subjectValue.trim() ? (
+          <Accordion type="multiple" value={allAccordionValues}>
+            {results}
+          </Accordion>
+        ) : (
+          <Accordion type="single" collapsible>
+            {results}
+          </Accordion>
+        )}
+      </div>
     </div>
   );
 }
