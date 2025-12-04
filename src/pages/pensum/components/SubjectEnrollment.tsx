@@ -67,7 +67,7 @@ export default function SubjectEnrollment() {
 
   return (
     <div className="flex h-full min-h-0 flex-col">
-      <h2 className="mt-8 mb-4 text-xl font-bold">Materias vistas</h2>
+      <h2 className="mt-2 mb-4 text-xl font-bold">Materias vistas</h2>
       <p className="rounded-lg border border-blue-300 bg-blue-100 p-2">
         <span className="font-bold">Tip:</span> Empieza por marcar las materias
         de los semestres superiores; los requisitos se activarán
