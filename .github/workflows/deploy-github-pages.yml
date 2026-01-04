@@ -45,6 +45,7 @@ jobs:
           VITE_FIREBASE_APP_ID: ${{ vars.VITE_FIREBASE_APP_ID }}
           VITE_FIREBASE_MESSAGING_SENDER_ID: ${{ vars.VITE_FIREBASE_MESSAGING_SENDER_ID }}
           VITE_BACKEND_BASE_URL: ${{ vars.VITE_BACKEND_BASE_URL }}
+          VITE_ALLOWED_EMAIL_DOMAINS: ${{ vars.VITE_ALLOWED_EMAIL_DOMAINS }}
         run: |
           pnpm run build \
             --base "${{ steps.pages.outputs.base_path }}"
