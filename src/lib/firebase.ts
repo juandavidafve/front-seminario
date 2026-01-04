@@ -6,6 +6,7 @@ import store from "@/redux/store";
 import { getAccountInfo } from "@/services/user";
 
 import {
+  ALLOWED_EMAIL_DOMAINS,
   FIREBASE_API_KEY,
   FIREBASE_APP_ID,
   FIREBASE_AUTH_DOMAIN,
@@ -24,23 +25,33 @@ const app = initializeApp({
 const auth = getAuth(app);
 
 auth.onAuthStateChanged(async (user) => {
-  if (user) {
-    if (!user.email?.endsWith("@ufps.edu.co")) {
-      toast.error("Solo se permiten correos @ufps.edu.co");
-      await auth.signOut();
-      return;
-    }
-
-    const info = await getAccountInfo();
-    store.dispatch({
-      type: "auth/login",
-      payload: info,
-    });
-  } else {
+  if (!user) {
     store.dispatch({
       type: "auth/logout",
     });
+
+    return;
   }
+
+  const matches = user.email?.match(/(?<=@)\w+(\.\w+)+$/); // Match everyting after @ in the email
+
+  if (
+    !matches ||
+    (!ALLOWED_EMAIL_DOMAINS.includes("*") &&
+      !ALLOWED_EMAIL_DOMAINS.includes(matches[0]))
+  ) {
+    toast.error(
+      `Solo se permiten correos ${ALLOWED_EMAIL_DOMAINS.map((i) => `@${i}`).join(", ")}`,
+    );
+    await auth.signOut();
+    return;
+  }
+
+  const info = await getAccountInfo();
+  store.dispatch({
+    type: "auth/login",
+    payload: info,
+  });
 });
 
 export default app;

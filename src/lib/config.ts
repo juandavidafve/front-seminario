@@ -6,3 +6,6 @@ export const FIREBASE_MESSAGING_SENDER_ID = import.meta.env
   .VITE_FIREBASE_MESSAGING_SENDER_ID;
 
 export const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_BASE_URL;
+export const ALLOWED_EMAIL_DOMAINS = import.meta.env.VITE_ALLOWED_EMAIL_DOMAINS
+  ? import.meta.env.VITE_ALLOWED_EMAIL_DOMAINS.split(",")
+  : ["*"];
