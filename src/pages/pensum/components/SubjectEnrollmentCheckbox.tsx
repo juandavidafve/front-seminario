@@ -3,6 +3,7 @@ import { useState } from "react";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
+import { useAppSelector } from "@/hooks/redux";
 import { usePensum } from "@/hooks/usePensum";
 import { toogleSubjectViewed } from "@/services/pensum";
 import type { Subject } from "@/types/Pensum";
@@ -12,6 +13,7 @@ interface Props {
 }
 
 export default function SubjectEnrollmentCheckbox({ subject }: Props) {
+  const hasChanged = useAppSelector((state) => state.pensum.hasChanged);
   const { refresh } = usePensum();
   const [loading, setLoading] = useState(false);
 
@@ -29,6 +31,7 @@ export default function SubjectEnrollmentCheckbox({ subject }: Props) {
           id={subject.code}
           checked={subject.isCompleted}
           onCheckedChange={hangleToggle}
+          disabled={hasChanged}
         />
       ) : (
         <Icon icon="svg-spinners:270-ring" className="size-4 text-primary" />

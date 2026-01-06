@@ -35,12 +35,13 @@ export default function SubjectEnrollment() {
       .map((subjects) =>
         subjects.filter((s) => {
           const key = `${s.code} - ${s.name}`.toLowerCase();
-          return !q || key.includes(q);
+          return key.includes(q);
         }),
       )
       .filter((subjects) => subjects.length > 0);
   }, [pensum, subjectValue]);
 
+  // Used as controlled value for accordion, to prevent collapsing
   const allAccordionValues = useMemo(
     () => filteredBySemester.filter((e) => e.length).map((_, i) => String(i)),
     [filteredBySemester],
@@ -54,7 +55,9 @@ export default function SubjectEnrollment() {
     <>
       {filteredBySemester.map((subjects, i) => (
         <AccordionItem key={i} value={String(i)}>
-          <AccordionTrigger>Semestre {subjects[0]?.semester}</AccordionTrigger>
+          <AccordionTrigger>
+            Semestre {filteredBySemester.length - i}
+          </AccordionTrigger>
           <AccordionContent className="space-y-4">
             {subjects.map((subject) => (
               <SubjectEnrollmentCheckbox subject={subject} key={subject.code} />

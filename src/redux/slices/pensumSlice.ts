@@ -28,6 +28,11 @@ export const pensumSlice = createSlice({
       if (!state.data) return;
 
       state.data.subjects.push(action.payload);
+
+      if (action.payload.semester > state.data.semesters) {
+        state.data.semesters = action.payload.semester;
+      }
+
       state.hasChanged = true;
     },
 
@@ -51,21 +56,21 @@ export const pensumSlice = createSlice({
         (s) => s.code === subject.code,
       );
 
-      // Caso 1: el nuevo código es el mismo → solo actualizo
+      // El code cambio y ya se encuentra en uso por otro subject
+      if (subject.code !== code && newIndex !== -1) {
+        return;
+      }
+
       if (subject.code === code) {
         state.data.subjects[oldIndex] = subject;
-        state.hasChanged = true;
-        return;
+      } else {
+        state.data.subjects.splice(oldIndex, 1);
+        state.data.subjects.push(subject);
       }
 
-      // Caso 2: el nuevo código ya está en uso por otro subject → error
-      if (newIndex !== -1) {
-        return;
-      }
-
-      // Caso 3: cambia el code y no hay conflicto → reemplazo
-      state.data.subjects.splice(oldIndex, 1);
-      state.data.subjects.push(subject);
+      state.data.semesters = Math.max(
+        ...state.data.subjects.map((s) => s.semester),
+      );
       state.hasChanged = true;
     },
 
