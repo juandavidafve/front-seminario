@@ -1,73 +1,72 @@
-# React + TypeScript + Vite
+# HorarioApp – Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Frontend repository of **HorarioApp**, a web application integrated with **Artificial Intelligence** for **academic schedule simulation and management** for students of the **Universidad Francisco de Paula Santander (UFPS)**.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🧠 Project Overview
 
-## React Compiler
+**HorarioApp** allows students to:
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+- Explore the academic curriculum (pensum) of Systems Engineering.
+- View subjects, groups, credits, schedules, and professors.
+- Create and manage schedule proposals without time conflicts.
+- Receive intelligent schedule recommendations through an **AI-powered assistant**, based on personal preferences and specialization interests.
 
-## Expanding the ESLint configuration
+Administrators can:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+- Manage users and roles.
+- Maintain subjects, groups, and equivalencies.
+- Synchronize academic data from [Divisist](https://divisist2.ufps.edu.co/).
 
-```js
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
+---
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## ⚙️ Installation & Setup
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+### Installation
+
+```bash
+git clone https://github.com/juanafanador07/HorarioApp-frontend.git
+cd HorarioApp-frontend
+pnpm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### ENV Variables
 
-```js
-// eslint.config.js
-import reactDom from "eslint-plugin-react-dom";
-import reactX from "eslint-plugin-react-x";
+Create a .env.local file in the project root and define the following variables:
 
-export default defineConfig([
-  globalIgnores(["dist"]),
-  {
-    files: ["**/*.{ts,tsx}"],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs["recommended-typescript"],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ["./tsconfig.node.json", "./tsconfig.app.json"],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-]);
+```bash
+VITE_FIREBASE_API_KEY=your_api_key
+VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
+VITE_FIREBASE_PROJECT_ID=your_project_id
+VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
+VITE_BACKEND_BASE_URL=https://api.example.com/
+VITE_ALLOWED_EMAIL_DOMAINS=*
 ```
+
+### Run in development mode
+
+```bash
+pnpm run dev
+```
+
+### Build for production
+
+```bash
+pnpm run build
+```
+
+---
+
+## 🔗 Related Repositories
+
+**Backend:** [HorarioAppUFPS-BackendPrincipal](https://github.com/JorgeMarles/HorarioAppUFPS-BackendPrincipal)
+
+**Scrapper Microservice:** [HorarioAppUFPS-Fetcher](https://github.com/JorgeMarles/HorarioAppUFPS-Fecther)
+
+**Orchestrator Microservice:** [HorarioAppUFPS-Orquestador](https://github.com/JorgeMarles/HorarioAppUFPS-Orquestador)
+
+**Divisist Auth Microservice:** [Divisist-Cookie](https://github.com/juandavidafve/divisist-cookie)
+
+**Chatbot Microservice:** [HorarioAppUFPS-AI-Chat](https://github.com/JorgeMarles/HorarioAppUFPS-AI-Chat)
