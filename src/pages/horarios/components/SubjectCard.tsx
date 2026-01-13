@@ -24,7 +24,7 @@ export default function SubjectCard({
   return (
     <Card className="mb-6">
       <CardContent className="space-y-4">
-        <SubjectSelect onSelect={onSubjectAdd} />
+        <SubjectSelect isFreeMode={schedule.freeMode} onSelect={onSubjectAdd} />
 
         <div className="space-y-2">
           {schedule?.subjects.map((subject) => (

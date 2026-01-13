@@ -8,9 +8,10 @@ import type { Subject } from "@/types/Pensum";
 
 interface Props {
   onSelect(subject: Subject): void;
+  isFreeMode: boolean;
 }
 
-export default function SubjectSelect({ onSelect }: Props) {
+export default function SubjectSelect({ onSelect, isFreeMode }: Props) {
   const subjects = useAppSelector((state) => state.pensum.data?.subjects);
   const [subject, setSubject] = useState<Subject>();
 
@@ -26,7 +27,9 @@ export default function SubjectSelect({ onSelect }: Props) {
         <Label htmlFor="subjectSearch">Nombre o Código de Materia</Label>
         <Combobox
           id="subjectSearch"
-          items={subjects?.filter((s) => s.canEnroll) || []}
+          items={
+            (isFreeMode ? subjects : subjects?.filter((s) => s.canEnroll)) || []
+          }
           itemValue={(item) => item.code}
           itemLabel={(item) => `${item.code} - ${item.name}`}
           value={subject}

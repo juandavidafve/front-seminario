@@ -60,3 +60,9 @@ export async function changeGroup(
   );
   return data;
 }
+
+export async function toggleFreemode(scheduleId: number) {
+  const { data } = await api.patch<Schedule>(`/schedule/${scheduleId}`);
+
+  return data;
+}
