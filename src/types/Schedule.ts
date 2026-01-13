@@ -4,6 +4,7 @@ export interface Schedule {
   id: number;
   title: string;
   credits: number;
+  freeMode: boolean;
   subjects: {
     group: ScheduleGroup;
     messages: ScheduleMsg[];

@@ -7,12 +7,14 @@ import {
   changeGroup,
   deleteGroup,
   getScheduleById,
+  toggleFreemode,
   updateTitle,
 } from "@/services/schedule";
 import type { Group, Subject } from "@/types/Pensum";
 import type { Schedule, ScheduleGroup } from "@/types/Schedule";
 
 import AIChat from "./components/AIChat";
+import FreeModeToggle from "./components/FreeModeToggle";
 import NameInput from "./components/NameInput";
 import ScheduleViewer from "./components/ScheduleViewer";
 import SubjectCard from "./components/SubjectCard";
@@ -63,13 +65,21 @@ export default function ScheduleDetails() {
     setSchedule(updatedSchedule);
   }
 
+  async function handleToggleFreemode() {
+    const updatedSchedule = await toggleFreemode(id);
+    setSchedule(updatedSchedule);
+  }
+
   if (!schedule) return;
 
   return (
     <>
       <h1 className="mb-8 text-2xl font-bold">Detalles de horario</h1>
 
-      <NameInput schedule={schedule} onChange={handleTitleUpdate} />
+      <div className="flex space-x-4">
+        <NameInput schedule={schedule} onChange={handleTitleUpdate} />
+        <FreeModeToggle schedule={schedule} onToggle={handleToggleFreemode} />
+      </div>
 
       <h2 className="mt-12 mb-4 text-xl font-bold">Materias</h2>
 
