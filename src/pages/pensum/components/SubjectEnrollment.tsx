@@ -31,19 +31,20 @@ export default function SubjectEnrollment() {
 
     if (!q) return reversed;
 
-    return reversed
-      .map((subjects) =>
-        subjects.filter((s) => {
-          const key = `${s.code} - ${s.name}`.toLowerCase();
-          return key.includes(q);
-        }),
-      )
-      .filter((subjects) => subjects.length > 0);
+    return reversed.map((subjects) =>
+      subjects.filter((s) => {
+        const key = `${s.code} - ${s.name}`.toLowerCase();
+        return key.includes(q);
+      }),
+    );
   }, [pensum, subjectValue]);
 
   // Used as controlled value for accordion, to prevent collapsing
   const allAccordionValues = useMemo(
-    () => filteredBySemester.filter((e) => e.length).map((_, i) => String(i)),
+    () =>
+      filteredBySemester
+        .map((_, i) => (_.length ? String(i) : null))
+        .filter((e) => e !== null),
     [filteredBySemester],
   );
 
@@ -51,9 +52,9 @@ export default function SubjectEnrollment() {
     setSubjectValue(value);
   };
 
-  const results = (
-    <>
-      {filteredBySemester.map((subjects, i) => (
+  const results = filteredBySemester.map((subjects, i) => {
+    if (subjects.length) {
+      return (
         <AccordionItem key={i} value={String(i)}>
           <AccordionTrigger>
             Semestre {filteredBySemester.length - i}
@@ -64,9 +65,11 @@ export default function SubjectEnrollment() {
             ))}
           </AccordionContent>
         </AccordionItem>
-      ))}
-    </>
-  );
+      );
+    } else {
+      return null;
+    }
+  });
 
   return (
     <div className="flex h-full min-h-0 flex-col">
