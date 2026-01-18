@@ -35,7 +35,7 @@ export default function GroupSelect({ group, onSelect }: Props) {
             {group.name} - {group.credits} Créditos
           </p>
           <p className="text-muted-foreground">
-            Grupo {group.code.slice(-1)} - {group.teacher}
+            Grupo {group.code} - {group.teacher}
           </p>
         </div>
       </SelectTrigger>

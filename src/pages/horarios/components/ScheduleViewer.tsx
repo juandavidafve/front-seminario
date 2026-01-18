@@ -1,3 +1,4 @@
+import { TriangleAlert } from "lucide-react";
 import { useMemo } from "react";
 
 import {
@@ -52,14 +53,17 @@ export default function ScheduleViewer({ schedule }: Props) {
     const maxDay = Math.max(4, ...cells.map((c) => c.day));
     const maxHour = Math.max(6, ...cells.map((c) => c.hour + c.duration));
 
-    const scheduleMatrix: (ScheduleCell | null)[][] = Array.from(
+    const scheduleMatrix: (ScheduleCell[] | null)[][] = Array.from(
       { length: maxHour },
       () => Array(maxDay + 1).fill(null),
     );
 
     for (const cell of cells) {
       for (let i = 0; i < cell.duration; i++) {
-        scheduleMatrix[cell.hour + i][cell.day] = cell;
+        if (scheduleMatrix[cell.hour + i][cell.day] === null) {
+          scheduleMatrix[cell.hour + i][cell.day] = [];
+        }
+        scheduleMatrix[cell.hour + i][cell.day]!.push(cell);
       }
     }
 
@@ -98,24 +102,43 @@ export default function ScheduleViewer({ schedule }: Props) {
               <TableCell className="text-center">
                 {formatHour(index)} - {formatHour(index + 1)}
               </TableCell>
-              {cellArr.map((cell) => {
-                if (cell === undefined) return;
-                if (cell === null) return <TableCell></TableCell>;
-
-                return (
-                  <TableCell className="relative h-24 w-32 min-w-28">
-                    <div
-                      className={cn(
-                        "absolute inset-1 flex flex-col justify-center rounded-lg p-2 text-xs text-wrap",
-                        cell.color,
-                      )}
-                    >
-                      <p className="line-clamp-2 font-bold">{cell.name}</p>
-                      <p>{cell.code}</p>
-                      <p>{cell.classroom}</p>
-                    </div>
-                  </TableCell>
-                );
+              {cellArr.map((cells) => {
+                if (cells === undefined) return;
+                if (cells === null) return <TableCell></TableCell>;
+                if (cells.length === 1) {
+                  const cell = cells[0];
+                  return (
+                    <TableCell className="relative h-24 w-32 min-w-28">
+                      <div
+                        className={cn(
+                          "absolute inset-1 flex flex-col justify-center rounded-lg p-2 text-xs text-wrap",
+                          cell.color,
+                        )}
+                      >
+                        <p className="line-clamp-2 font-bold">{cell.name}</p>
+                        <p>{cell.code}</p>
+                        <p>{cell.classroom}</p>
+                      </div>
+                    </TableCell>
+                  );
+                } else {
+                  return (
+                    <TableCell className="relative h-24 w-32 min-w-28">
+                      <div
+                        className={cn(
+                          "absolute inset-1 flex flex-col justify-center rounded-lg p-2 text-xs text-wrap",
+                          "bg-red-400",
+                        )}
+                      >
+                        <p className="line-clamp-2 flex items-center font-bold">
+                          {" "}
+                          <TriangleAlert /> Conflicto de Materias
+                        </p>
+                        <p>{cells.map((c) => c.name).join(", ")}</p>
+                      </div>
+                    </TableCell>
+                  );
+                }
               })}
             </TableRow>
           ))}
