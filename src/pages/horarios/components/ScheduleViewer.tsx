@@ -86,7 +86,10 @@ export default function ScheduleViewer({ schedule }: Props) {
               "Domingo",
             ].map((day, i) =>
               i <= maxDay ? (
-                <TableHead key={day} className="text-center font-bold">
+                <TableHead
+                  key={day}
+                  className="w-32 min-w-28 text-center font-bold"
+                >
                   {day}
                 </TableHead>
               ) : undefined,
