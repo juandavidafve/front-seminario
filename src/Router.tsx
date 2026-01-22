@@ -46,6 +46,9 @@ export default function Router() {
           {user?.roles.includes("ROLE_ADMIN") && (
             <Route path="usuarios" element={<Usuarios />} />
           )}
+          {user?.roles.includes("ROLE_ADMIN") && (
+            <Route path="pensum/changelog" element={<Usuarios />} />
+          )}
           <Route path="horarios" element={<Horarios />} />
           <Route path="horarios/:id" element={<ScheduleDetails />} />
         </Route>

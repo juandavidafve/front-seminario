@@ -1,5 +1,6 @@
 import "@xyflow/react/dist/style.css";
 import { useEffect } from "react";
+import { Link } from "react-router";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { hasCompletedSubjectsSelector } from "@/redux/selectors/pensumSelectors";
@@ -31,7 +32,12 @@ export default function Pensum() {
 
   return (
     <>
-      <h1 className="mb-8 text-2xl font-bold">Pensum</h1>
+      <div className="mb-8 flex items-center">
+        <h1 className="me-4 text-2xl font-bold">Pensum </h1>
+        <Link to={"/pensum/changelog"}>
+          <h2 className="text-l underline">Ver cambios</h2>
+        </Link>
+      </div>
 
       <div className="flex min-h-0 flex-col gap-6 lg:h-[calc(100vh-8rem)] lg:flex-row">
         {hasCompletedSubjects && (
