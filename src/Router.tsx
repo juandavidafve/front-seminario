@@ -19,6 +19,7 @@ import Usuarios from "@/pages/usuarios";
 import Layout from "./Layout";
 import { usePensum } from "./hooks/usePensum";
 import "./index.css";
+import ChangeLog from "./pages/pensum/changelog";
 
 export default function Router() {
   usePensum();
@@ -47,7 +48,7 @@ export default function Router() {
             <Route path="usuarios" element={<Usuarios />} />
           )}
           {user?.roles.includes("ROLE_ADMIN") && (
-            <Route path="pensum/changelog" element={<Usuarios />} />
+            <Route path="pensum/changelog" element={<ChangeLog />} />
           )}
           <Route path="horarios" element={<Horarios />} />
           <Route path="horarios/:id" element={<ScheduleDetails />} />

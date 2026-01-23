@@ -27,7 +27,7 @@ export const SubjectChangeLogSchema = z.object({
 
 export const PensumChangeLogSchema = z.object({
   id: z.number(),
-  date: z.number().transform((timestamp) => new Date(timestamp)), // Convierte timestamp a Date
+  date: z.number(), // Mantener como timestamp para Redux (serializable)
   pensumId: z.number(),
   pensumName: z.string(),
   subjectChangeLogs: z.array(SubjectChangeLogSchema),
