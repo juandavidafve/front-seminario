@@ -17,10 +17,11 @@ import { useAppDispatch, useAppSelector } from "@/hooks/redux";
 import { cn } from "@/lib/utils";
 import {
   clearWorkflow,
+  setChangelog,
   setPensum,
   setWorkflow,
 } from "@/redux/slices/pensumSlice";
-import { getPensum } from "@/services/pensum";
+import { getChangelog, getPensum } from "@/services/pensum";
 import {
   createWorkflow,
   getWorkflowByUUID,
@@ -49,6 +50,9 @@ export default function WorkflowView({ open, onOpenChange }: Props) {
 
           const pensum = await getPensum();
           dispatch(setPensum(pensum));
+
+          const changelogData = await getChangelog();
+          dispatch(setChangelog(changelogData));
         }
         if (res.state === "ERROR") {
           toast.error(

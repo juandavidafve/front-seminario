@@ -8,11 +8,12 @@ import { useNavigationBlocker } from "@/hooks/useNavigationBlocker";
 import {
   insertSubject,
   removeSubject,
+  setChangelog,
   setPensum,
   setWorkflow,
   updateSubject,
 } from "@/redux/slices/pensumSlice";
-import { savePensum } from "@/services/pensum";
+import { getChangelog, savePensum } from "@/services/pensum";
 import { createWorkflow } from "@/services/workflow";
 import { type Subject } from "@/types/Pensum";
 
@@ -46,6 +47,9 @@ export default function PensumManager() {
 
     const data = await savePensum(pensum);
     dispatch(setPensum(data));
+
+    const changelogData = await getChangelog();
+    dispatch(setChangelog(changelogData));
     toast.success("Pensum actualizado correctamente");
   }
 
